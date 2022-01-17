@@ -76,7 +76,7 @@ add_user() {
     chroot_exec adduser "$ADDUSER" sudo
 
     chroot_exec mkdir -p "/home/$ADDUSER/.ssh"
-    wget "https://raw.githubusercontent.com/Doridian/home-scripts/master/sshkeys/$ADDUSER" -O "$ROOTFS_PATH/home/$ADDUSER/.ssh/authorized_keys"
+    wget "https://raw.githubusercontent.com/FoxDenHome/sshkeys/master/$ADDUSER" -O "$ROOTFS_PATH/home/$ADDUSER/.ssh/authorized_keys"
     chroot_exec chmod -R 600 "/home/$ADDUSER/.ssh"
     chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
