@@ -1,6 +1,5 @@
 .DS_Store
-.env
-__pycache__
-*.pyc
-/router/router.rsc
-/router/router.backup
+/output
+/testimg
+/input/rootfs/etc/image_commit
+/input/rootfs/etc/image_date
