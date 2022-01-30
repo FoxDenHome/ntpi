@@ -28,3 +28,8 @@ auto eth0.5
 iface eth0.5 inet static
 	address 10.5.1.2
 	netmask 255.255.0.0
+
+auto eth0.6
+iface eth0.6 inet static
+	address 10.6.1.2
+	netmask 255.255.0.0
