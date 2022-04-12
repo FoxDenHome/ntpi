@@ -5,6 +5,7 @@ set -e
 mkenvimage -s 0x4000 -o "$BOOTFS_PATH/uboot.env" "$INPUT_PATH/uboot.env"
 cp "$INPUT_PATH/usercfg.txt" "$BOOTFS_PATH/usercfg.txt"
 echo 'include usercfg.txt' >> "$BOOTFS_PATH/config.txt"
+cp "$INPUT_PATH/edid.dat" "$BOOTFS_PATH/edid.dat"
 
 # Install packages
 chroot_exec apk update
