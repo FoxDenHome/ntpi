@@ -63,7 +63,7 @@ revert_data_override '/etc/conf.d/dropbear'
 # Copy our rootfs additions
 cp -rp "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
 
-ln -s '/data/etc/adjtime' "ROOTFS_PATH/etc/adjtime"
+ln -s '/data/etc/adjtime' "$ROOTFS_PATH/etc/adjtime"
 
 IMAGE_COMMIT="$(cat "$ROOTFS_PATH/etc/image_commit")"
 IMAGE_DATE="$(cat "$ROOTFS_PATH/etc/image_date")"
