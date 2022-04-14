@@ -10,7 +10,7 @@ cp "$INPUT_PATH/edid.dat" "$BOOTFS_PATH/edid.dat"
 # Install packages
 chroot_exec apk update
 chroot_exec apk upgrade
-chroot_exec apk add bridge-utils curl screen prometheus-node-exporter gpsd gpsd-clients chrony bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-pyserial py3-gpsd
+chroot_exec apk add bridge-utils curl screen prometheus-node-exporter gpsd gpsd-clients chrony bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-pyserial py3-gpsd raspberrypi
 
 # Configure services
 chroot_exec rc-update del ntpd default
@@ -62,6 +62,8 @@ revert_data_override '/etc/conf.d/dropbear'
 
 # Copy our rootfs additions
 cp -rp "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
+
+ln -s /data/etc/adjtime /etc/adjtime
 
 IMAGE_COMMIT="$(cat "$ROOTFS_PATH/etc/image_commit")"
 IMAGE_DATE="$(cat "$ROOTFS_PATH/etc/image_date")"
