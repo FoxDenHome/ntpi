@@ -1,1 +1,1 @@
-hdmi_edid_file=1
+# No HDMI overrides present
