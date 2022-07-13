@@ -12,8 +12,8 @@ export CMDLINE="console=tty1 root=/dev/root rootfstype=ext4 fsck.repair=yes ro r
 git rev-parse HEAD > input/rootfs/etc/image_commit
 date > input/rootfs/etc/image_date
 
-#docker build -t ntp-alpine-compiler compiler
-docker run --rm -it --entrypoint=/input/compile.sh -v "$PWD/input:/input" ntp-alpine-compiler
+docker buildx build --platform=linux/arm64 -t ntp-alpine-compiler compiler
+docker run --platform=linux/arm64 --rm -it --entrypoint=/input/compile.sh -v "$PWD/input:/input" ntp-alpine-compiler
 
 IMG="ghcr.io/raspi-alpine/builder"
 docker pull "$IMG"
