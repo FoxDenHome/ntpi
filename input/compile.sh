@@ -1,9 +1,16 @@
 #!/bin/bash
 set -e
 
+
+
+
+echo "#######################################"
+echo "COMPILING PTPD"
+echo "#######################################"
+
 cd /tmp
 git clone https://github.com/wowczarek/ptpd.git
-cd ptpd
+cd /tmp/ptpd
 
 DEF_FILE='src/constants.h'
 echo '' >> "$DEF_FILE"
@@ -17,5 +24,19 @@ find src/libcck -type f | xargs -n1 sed 's~#include <linux/if_ether.h>~#include 
 autoreconf -vi
 ./configure
 make "-j$(nproc)"
+cp src/ptpd /input/rootfs/sbin/
 
-cp src/ptpd /input/rootfs/sbin/ptpd
+
+
+
+
+echo "#######################################"
+echo "COMPILING LINUXPTP"
+echo "#######################################"
+mkdir -p /tmp/ptp
+tar -C/tmp/ptp -xvf /input/linuxptp-3.1.1.tgz
+cd /tmp/ptp/linuxptp-3.1.1
+
+make "-j$(nproc)"
+make install
+cp /usr/local/sbin/* /input/rootfs/sbin/
