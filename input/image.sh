@@ -60,7 +60,7 @@ revert_data_ln '/root'
 revert_data_override '/etc/conf.d/dropbear'
 
 # Copy our rootfs additions
-cp -rp "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
+cp -r "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
 
 ln -s '/data/etc/adjtime' "$ROOTFS_PATH/etc/adjtime"
 
