@@ -1,0 +1,35 @@
+#!/sbin/openrc-run
+# shellcheck shell=ash
+
+command=/sbin/ptp4l
+pidfile="/var/run/ptp4l.pid"
+
+depend()
+{
+        need net
+        after firewall
+        use dns
+}
+
+start() {
+        ebegin "Starting ptp4l"
+
+        local command=/sbin/ptp4l
+        local iface=eth0.2
+        local cfgfile=/etc/ptp4l.conf
+    
+        start-stop-daemon --background --start --quiet \
+                --exec "${command}" \
+                --pidfile "${pidfile}" \
+                -- -i "${iface}" -f "${cfgfile}"
+        eend $? "Failed to start ptp4l"
+}
+
+stop() {
+        checkconfig || return $?
+
+        ebegin "Stopping ptp4l"
+        start-stop-daemon --stop --quiet \
+                --pidfile "${pidfile}"
+        eend $? "Failed to stop ptp4l"
+}

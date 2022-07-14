@@ -34,9 +34,14 @@ echo "#######################################"
 echo "COMPILING LINUXPTP"
 echo "#######################################"
 mkdir -p /tmp/ptp
-tar -C/tmp/ptp -xvf /input/linuxptp-3.1.1.tgz
+tar -C/tmp/ptp -xvf /input/src/linuxptp-3.1.1.tgz
 cd /tmp/ptp/linuxptp-3.1.1
 
 make "-j$(nproc)"
 make install
 cp /usr/local/sbin/* /input/rootfs/sbin/
+
+echo "#######################################"
+echo "COMPILING SET-TAI.C"
+echo "#######################################"
+gcc /input/src/set-tai.c -O2 -o /input/rootfs/sbin/set-tai
