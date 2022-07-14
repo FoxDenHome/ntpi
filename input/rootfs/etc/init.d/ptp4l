@@ -18,7 +18,7 @@ start() {
         local iface=eth0.2
         local cfgfile=/etc/ptp4l.conf
     
-        start-stop-daemon --background --start --quiet \
+        start-stop-daemon -m --background --start --quiet \
                 --exec "${command}" \
                 --pidfile "${pidfile}" \
                 -- -i "${iface}" -f "${cfgfile}"

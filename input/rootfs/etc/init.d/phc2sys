@@ -14,7 +14,7 @@ depend()
 start() {
         ebegin "Starting phc2sys"
     
-        start-stop-daemon --background --start --quiet \
+        start-stop-daemon -m --background --start --quiet \
                 --exec "${command}" \
                 --pidfile "${pidfile}" \
                 -- -a -r -r
