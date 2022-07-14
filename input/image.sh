@@ -20,6 +20,7 @@ chroot_exec rc-update add chronyd
 chroot_exec rc-update add node-exporter
 chroot_exec rc-update add hwclock
 chroot_exec rc-update add keepalived
+chroot_exec rc-update add crond
 
 # Configure kernel modules
 echo -n > "$ROOTFS_PATH/etc/modules"
