@@ -26,8 +26,6 @@ start() {
 }
 
 stop() {
-        checkconfig || return $?
-
         ebegin "Stopping ptp4l"
         start-stop-daemon --stop --quiet \
                 --pidfile "${pidfile}"

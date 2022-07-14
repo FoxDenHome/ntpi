@@ -23,8 +23,6 @@ start() {
 }
 
 stop() {
-        checkconfig || return $?
-
         ebegin "Stopping phc2sys"
         start-stop-daemon --stop --quiet \
                 --pidfile "${pidfile}"
