@@ -14,11 +14,11 @@ chroot_exec apk add bridge-utils curl screen prometheus-node-exporter gpsd gpsd-
 # Configure services
 chroot_exec rc-update del ntpd default
 chroot_exec rc-update del ab_clock default
+chroot_exec rc-update del crond
 chroot_exec rc-update add chronyd
 chroot_exec rc-update add node-exporter
 chroot_exec rc-update add hwclock
 chroot_exec rc-update add keepalived
-chroot_exec rc-update add crond
 
 # Configure kernel modules
 echo -n > "$ROOTFS_PATH/etc/modules"
@@ -65,6 +65,7 @@ cp -r "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
 chroot_exec rc-update add ptp4l
 chroot_exec rc-update add phc2sys
 chroot_exec rc-update add ts2phc
+chroot_exec rc-update add update-tai-offset
 
 ln -s '/data/etc/adjtime' "$ROOTFS_PATH/etc/adjtime"
 
