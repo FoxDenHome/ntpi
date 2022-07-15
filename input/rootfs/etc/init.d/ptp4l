@@ -15,7 +15,6 @@ depend()
 
 start() {
         ebegin "Starting ptp4l"
-
     
         start-stop-daemon -m --background --start --quiet \
                 --exec "${command}" \

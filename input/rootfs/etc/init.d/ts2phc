@@ -15,7 +15,6 @@ depend()
 
 start() {
         ebegin "Starting ts2phc"
-
     
         start-stop-daemon -m --background --start --quiet \
                 --exec "${command}" \

@@ -25,27 +25,6 @@ timebeat:
     primary_clocks:
 
       # PTP Config example
-      - protocol:                ptp
-        domain:                  0
-        serve_unicast:          true  # (Enterprise Feature)
-        serve_multicast:        true  # (Enterprise Feature)
-        server_only:            true  # (Enterprise Feature)
-        announce_interval:       1
-        sync_interval:           0
-        delayrequest_interval:   0
-        #unicast_master_table:   ['1.2.3.4','2.3.4.5', '3.4.5.6']
-        #delay_strategy:         e2e   # other options which can be used are: 'p2p'
-        #hybrid_e2e:             false # Send delay requests as unicast (enterprise profile)
-        #priority1:              128
-        #priority2:              128
-        #monitor_only:           false
-        #use_layer2:             false      # Use ptp over ethernet instead of IP/UDP
-        interface:              eth0.2
-        profile:                'G.8275.2' # other options which can be used are: 'G.8275.1', 'G.8265.1' and 'enterprise-draft'
-        #logsource:              'Grandmaster Clock in NY4' # configurable name for source included in all logging records for source
-        #asymmetry_compensation: 0 # In nanoseconds. Static compensation for know asymmetry (+/- as the case maybe)
-
-      # PTP Config example
       #- protocol:               ptp
       #  domain:                 10
       #  serve_unicast:          true
@@ -69,7 +48,7 @@ timebeat:
 
       # Pulse-per-second input config example  (ENTERPRISE FEATURE) PPS can be configured using Timebeat CLI
       - protocol:     pps
-        interface:    eth0.2
+        interface:    eth0
         pin:          0
         index:        0
         cable_delay:  0
@@ -83,10 +62,31 @@ timebeat:
         baud: 115200
         monitor_only: false
 
+
     # Secondary clocks. When all primary sources are unavailable the below will activate (ENTERPRISE FEATURE)
 
     secondary_clocks:
 
+      # PTP Config example
+      - protocol:                ptp
+        domain:                  0
+        serve_unicast:           true  # (Enterprise Feature)
+        serve_multicast:         true  # (Enterprise Feature)
+        server_only:             true  # (Enterprise Feature)
+        announce_interval:       1
+        sync_interval:           0
+        delayrequest_interval:   0
+        #unicast_master_table:   ['1.2.3.4','2.3.4.5', '3.4.5.6']
+        #delay_strategy:         e2e   # other options which can be used are: 'p2p'
+        #hybrid_e2e:             false # Send delay requests as unicast (enterprise profile)
+        #priority1:              128
+        #priority2:              128
+        #monitor_only:           false
+        #use_layer2:             false      # Use ptp over ethernet instead of IP/UDP
+        interface:               eth0.2
+        #profile:                'G.8275.2' # other options which can be used are: 'G.8275.1', 'G.8265.1' and 'enterprise-draft'
+        #logsource:              'Grandmaster Clock in NY4' # configurable name for source included in all logging records for source
+        #asymmetry_compensation: 0 # In nanoseconds. Static compensation for know asymmetry (+/- as the case maybe)
       # PTP Config example
       #- protocol:              ptp
       #  domain:                0
@@ -173,7 +173,7 @@ timebeat:
       # reservations:          ["1500:50%:115,116", "750:25%"] # List containing client seat reservations:
                                                                #   :
                                                                #   :
-                                                               #  
+                                                               #
 
       # debug:                 false # debug logging specifically for ptpsquared
 
@@ -322,7 +322,7 @@ timebeat:
         enable: true
         bind_port: 65129
         bind_host: 0.0.0.0
-        
+
         # Server SSH key. If path specified key will be loaded or generated. Otherwise key will be random on startup
         server_key: "/data/timebeat/cli_id_rsa"
 
@@ -372,10 +372,19 @@ setup.dashboards.enabled: false
 
 # Configure what output to use when sending the data collected by the beat.
 
+#
+
+output.file:
+  path: "/tmp/filebeat"
+  filename: filebeat
+  rotate_every_kb: 10000
+  number_of_files: 7
+  #permissions: 0600
+
 # ---------------------------- Elasticsearch Output ----------------------------
-output.elasticsearch:
+#output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ['localhost:9200'] # insert ip address of your elastic server
+#  hosts: ['localhost:9200'] # insert ip address of your elastic server
   # hosts: ['elastic.customer.timebeat.app:9200'] # host format when using timebeat cloud
 
   # Protocol - either `http` (default) or `https` (https is required for timebeat cloud).

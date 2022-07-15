@@ -4,6 +4,7 @@
 command=/sbin/phc2sys
 pidfile="/var/run/phc2sys.pid"
 cfgfile=/etc/ptp4l.conf
+iface=eth0.2
 
 depend()
 {
@@ -18,7 +19,7 @@ start() {
         start-stop-daemon -m --background --start --quiet \
                 --exec "${command}" \
                 --pidfile "${pidfile}" \
-                -- -f "${cfgfile}" -a -r -E linreg
+                -- -f "${cfgfile}" -s "${iface}" -c CLOCK_REALTIME -E ntpshm
 
         chrt -a -p 60 "$(cat "${pidfile}")"
 
