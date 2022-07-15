@@ -3,8 +3,8 @@
 # The GPS device (/dev/ttyUSB0, /dev/ttyS0, ...)
 
 DEVICE="/dev/ttyAMA0"
-#BAUDRATE="115200"
-BAUDRATE="460800"
+BAUDRATE="115200"
+#BAUDRATE="460800"
 DEVICES="$DEVICE /dev/pps0"
 
 # Optional arguments

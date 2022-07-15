@@ -9,7 +9,7 @@ echo 'include usercfg.txt' >> "$BOOTFS_PATH/config.txt"
 # Install packages
 chroot_exec apk update
 chroot_exec apk upgrade
-chroot_exec apk add bridge-utils curl screen prometheus-node-exporter gpsd gpsd-clients chrony bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-pyserial py3-gpsd raspberrypi
+chroot_exec apk add bridge-utils curl screen prometheus-node-exporter gpsd gpsd-clients chrony bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-pyserial py3-gpsd raspberrypi libc6-compat
 #chroot_exec apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main/ tzdata tzdata-doc tzdata-utils
 
 # Configure services
