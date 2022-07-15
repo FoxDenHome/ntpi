@@ -56,7 +56,7 @@ class LeapFile():
 
         min_expiry = datetime.utcnow() - self.renewal_timeout
         if (not force) and self.expiry is not None and (self.expiry >= min_expiry):
-            return
+            return False
 
         res = get(self.url)
         res.raise_for_status()
@@ -65,6 +65,8 @@ class LeapFile():
 
         if self.loaded:
             self.reload()
+
+        return True
 
     def parse(self, data):
         self.time_map = {}
@@ -89,7 +91,7 @@ class LeapFile():
 
 class Configuator(ABC):
     @abstractmethod
-    def configure(self):
+    def configure(self, did_update):
         pass
 
 class PTP4LConfigurator(Configuator):
@@ -102,7 +104,7 @@ class PTP4LConfigurator(Configuator):
         self.frequency_traceable = False
         self.offset_scaled_log_variance = 0xFFFF
 
-    def configure(self):
+    def configure(self, did_update):
         check_call([
             "pmc", "-u", "-b", "0", "-f", "/etc/ptp4l.conf",
             f"""set GRANDMASTER_SETTINGS_NP
@@ -125,7 +127,7 @@ class KernelConfigurator(Configuator):
     def __init__(self, leapfile):
         self.leapfile = leapfile
 
-    def configure(self):
+    def configure(self, did_update):
         offset = self.leapfile.current_utc_tai_offset()
         check_call(["set-tai", f"{offset}"])
 
@@ -142,8 +144,9 @@ def main():
         stderr.write("Running check loop...\n")
         stderr.flush()
 
+        did_update = False
         try:
-            leapfile.update()
+            did_update = leapfile.update()
         except Exception:
             stderr.write("Error updating leapfile:\n")
             print_exc(file=stderr)
@@ -151,7 +154,7 @@ def main():
 
         for configuator in configuators:
             try:
-                configuator.configure()
+                configuator.configure(did_update)
             except Exception:
                 stderr.write("Error running configuator:\n")
                 print_exc(file=stderr)

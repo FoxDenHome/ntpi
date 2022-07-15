@@ -14,7 +14,6 @@ chroot_exec apk add bridge-utils curl screen prometheus-node-exporter gpsd gpsd-
 # Configure services
 chroot_exec rc-update del ntpd default
 chroot_exec rc-update del ab_clock default
-chroot_exec rc-update del crond
 chroot_exec rc-update add chronyd
 chroot_exec rc-update add node-exporter
 chroot_exec rc-update add hwclock
