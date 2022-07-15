@@ -37,7 +37,7 @@ mkdir -p /tmp/ptp
 tar -C/tmp/ptp -xf /input/src/linuxptp-3.1.1.tgz
 cd /tmp/ptp/linuxptp-3.1.1
 
-sed 's~#define BAUD\s.*~#define BAUD 115200~g' -i ts2phc_nmea_master.c
+#sed 's~#define BAUD\s.*~#define BAUD 115200~g' -i ts2phc_nmea_master.c
 
 make "-j$(nproc)"
 make install
