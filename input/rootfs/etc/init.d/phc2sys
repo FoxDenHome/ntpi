@@ -17,7 +17,7 @@ start() {
         start-stop-daemon -m --background --start --quiet \
                 --exec "${command}" \
                 --pidfile "${pidfile}" \
-                -- -a -r -r
+                -- -a -r -r -E linreg
 
         chrt -a -p 60 "$(cat "${pidfile}")"
 
