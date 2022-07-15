@@ -19,7 +19,7 @@ start() {
         start-stop-daemon -m --background --start --quiet \
                 --exec "${command}" \
                 --pidfile "${pidfile}" \
-                -- -f "${cfgfile}" -s "${iface}" -c CLOCK_REALTIME -E ntpshm
+                -- -f "${cfgfile}" -s "${iface}" -c CLOCK_REALTIME -E ntpshm -w
 
         chrt -a -p 60 "$(cat "${pidfile}")"
 
