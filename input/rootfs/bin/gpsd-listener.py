@@ -7,7 +7,7 @@ from threading import Thread
 from traceback import print_exc
 from time import sleep
 
-IP = '127.0.0.1'
+IP = "127.0.0.1"
 PORT = 9887
 server = socket(AF_INET, SOCK_STREAM)
 server.bind((IP, PORT))
@@ -19,7 +19,8 @@ txset = []
 
 def close_socket(sock):
     sock.close()
-    rxset.remove(sock)
+    if sock in rxset:
+        rxset.remove(sock)
 
 
 def do_forward(nmea):
@@ -37,18 +38,18 @@ def handle_sockets():
     while True:
         rxfds, txfds, exfds = select(rxset, txset, rxset)
         for sock in rxfds:
-            print(sock)
             if sock is server:
                 conn, _ = server.accept()
                 conn.setblocking(0)
                 rxset.append(conn)
                 print("Accepted new client")
-            else:
-                try:
-                    sock.recv(512)
-                except:
-                    close_socket(sock)
-                    print_exc()
+                continue
+
+            try:
+                sock.recv(512)
+            except:
+                close_socket(sock)
+                print_exc()
 
 
 def handle_gpsd():
@@ -58,7 +59,7 @@ def handle_gpsd():
             while True:
                 report = gpsd.next()
                 resp = gpsd.response
-                if report['class'] == 'DEVICE':
+                if report["class"] == "DEVICE":
                     gpsd.close()
                     gpsd = gps(mode=WATCH_ENABLE | WATCH_NMEA)
                     continue
