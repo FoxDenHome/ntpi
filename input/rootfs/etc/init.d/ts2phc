@@ -1,0 +1,35 @@
+#!/sbin/openrc-run
+# shellcheck shell=ash
+
+command=/sbin/ts2phc
+pidfile="/var/run/ts2phc.pid"
+cfgfile=/etc/ptp4l.conf
+iface=eth0.2
+
+depend()
+{
+        need net
+        after firewall
+        use dns
+}
+
+start() {
+        ebegin "Starting ts2phc"
+
+    
+        start-stop-daemon -m --background --start --quiet \
+                --exec "${command}" \
+                --pidfile "${pidfile}" \
+                -- -c "${iface}" -s nmea -f "${cfgfile}"
+
+        chrt -a -p 70 "$(cat "${pidfile}")"
+
+        eend $? "Failed to start ts2phc"
+}
+
+stop() {
+        ebegin "Stopping ts2phc"
+        start-stop-daemon --stop --quiet \
+                --pidfile "${pidfile}"
+        eend $? "Failed to stop ts2phc"
+}
