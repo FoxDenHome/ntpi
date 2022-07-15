@@ -3,6 +3,7 @@
 
 command=/sbin/phc2sys
 pidfile="/var/run/phc2sys.pid"
+cfgfile=/etc/ptp4l.conf
 
 depend()
 {
@@ -17,7 +18,7 @@ start() {
         start-stop-daemon -m --background --start --quiet \
                 --exec "${command}" \
                 --pidfile "${pidfile}" \
-                -- -a -r -r -E linreg
+                -- -f "${cfgfile}" -a -r -E linreg
 
         chrt -a -p 60 "$(cat "${pidfile}")"
 

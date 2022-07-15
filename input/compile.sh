@@ -44,6 +44,7 @@ make install
 cp /usr/local/sbin/* /input/rootfs/sbin/
 
 echo "#######################################"
-echo "COMPILING SET-TAI.C"
+echo "COMPILING UTILITIES"
 echo "#######################################"
 gcc /input/src/set-tai.c -O2 -o /input/rootfs/sbin/set-tai
+gcc /input/src/testptp.c -O2 -o /input/rootfs/sbin/testptp

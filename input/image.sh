@@ -10,12 +10,10 @@ echo 'include usercfg.txt' >> "$BOOTFS_PATH/config.txt"
 chroot_exec apk update
 chroot_exec apk upgrade
 chroot_exec apk add bridge-utils curl screen prometheus-node-exporter gpsd gpsd-clients chrony bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-pyserial py3-gpsd raspberrypi libc6-compat
-#chroot_exec apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main/ tzdata tzdata-doc tzdata-utils
 
 # Configure services
 chroot_exec rc-update del ntpd default
 chroot_exec rc-update del ab_clock default
-chroot_exec rc-update add gpsd
 chroot_exec rc-update add chronyd
 chroot_exec rc-update add node-exporter
 chroot_exec rc-update add hwclock
@@ -66,6 +64,7 @@ cp -r "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
 
 chroot_exec rc-update add ptp4l
 chroot_exec rc-update add phc2sys
+chroot_exec rc-update add ts2phc
 
 ln -s '/data/etc/adjtime' "$ROOTFS_PATH/etc/adjtime"
 

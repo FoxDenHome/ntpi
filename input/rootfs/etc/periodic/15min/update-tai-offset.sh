@@ -23,6 +23,7 @@ fi
 if [ $EXPIRES -lt `date -d "NOW + $PREFETCH" +%s` ]
 then
         wget -qO "$LEAP_FILE" 'https://www.ietf.org/timezones/data/leap-seconds.list'
+        /etc/init.d/ts2phc restart
 fi
 
 TAI_OFFSET="$(grep -v '^#' "$LEAP_FILE" | tail -1 | awk '{ print $2 }')"

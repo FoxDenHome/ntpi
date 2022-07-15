@@ -3,6 +3,8 @@
 
 command=/sbin/ptp4l
 pidfile="/var/run/ptp4l.pid"
+cfgfile=/etc/ptp4l.conf
+iface=eth0.2
 
 depend()
 {
@@ -14,9 +16,6 @@ depend()
 start() {
         ebegin "Starting ptp4l"
 
-        local command=/sbin/ptp4l
-        local iface=eth0.2
-        local cfgfile=/etc/ptp4l.conf
     
         start-stop-daemon -m --background --start --quiet \
                 --exec "${command}" \
