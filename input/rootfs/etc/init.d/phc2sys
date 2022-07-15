@@ -19,6 +19,8 @@ start() {
                 --pidfile "${pidfile}" \
                 -- -a -r -r
 
+        chrt -a -p 60 "$(cat "${pidfile}")"
+
         eend $? "Failed to start phc2sys"
 }
 
