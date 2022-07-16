@@ -8,16 +8,17 @@ rm -rf input/tmp && mkdir -p input/tmp
 mkdir -p input/download && rm -f input/download/*.tmp
 
 hash_check() {
-    FILE="$1"
-    HASH="$2"
+    local FILE="$1"
+    local EXPECTED_HASH="$2"
 
-    if [ ! -f "$DEST" ]
+    if [ ! -f "$FILE" ]
     then
         echo 1
     else
         MEASURED_HASH="$(sha256sum -b "$FILE" | cut -d' ' -f1)"
-        if [ "$MEASURED_HASH" != "$HASH" ]
+        if [ "$MEASURED_HASH" != "$EXPECTED_HASH" ]
         then
+            echo "Got: $MEASURED_HASH != Wanted: $EXPECTED_HASH" > /dev/stderr
             echo 2
         else
             echo 0
@@ -26,9 +27,9 @@ hash_check() {
 }
 
 download_if_not_exist() {
-    URL="$1"
-    HASH="$2"
-    DEST="./input/download/$3"
+    local URL="$1"
+    local HASH="$2"
+    local DEST="./input/download/$3"
 
     if [ `hash_check "$DEST" "$HASH"` != "0" ]
     then
@@ -36,8 +37,10 @@ download_if_not_exist() {
         rm -f "$DEST.tmp"
 
         wget -O "$DEST.tmp" "$URL"
-        if [ `hash_check "$DEST" "$HASH"` != "0" ]
+        if [ `hash_check "$DEST.tmp" "$HASH"` != "0" ]
         then
+            sha256sum -b "$DEST.tmp"
+            echo "$HASH"
             echo 'Hash mismatch on download!'
             exit 1
         fi
