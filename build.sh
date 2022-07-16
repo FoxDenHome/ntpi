@@ -28,7 +28,7 @@ hash_check() {
 download_if_not_exist() {
     URL="$1"
     HASH="$2"
-    DEST="./input/download/$2"
+    DEST="./input/download/$3"
 
     if [ `hash_check "$DEST" "$HASH"` != "0" ]
     then
