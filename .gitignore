@@ -1,6 +1,6 @@
 .DS_Store
 /output
-/input/rootfs/sbin/*
+/input/rootfs/usr
 /testimg
 /input/rootfs/etc/image_commit
 /input/rootfs/etc/image_date

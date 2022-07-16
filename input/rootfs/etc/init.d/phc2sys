@@ -1,7 +1,7 @@
 #!/sbin/openrc-run
 # shellcheck shell=ash
 
-command=/sbin/phc2sys
+command=/usr/sbin/phc2sys
 pidfile="/var/run/phc2sys.pid"
 cfgfile=/etc/ptp4l.conf
 iface=eth0

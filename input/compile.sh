@@ -15,9 +15,9 @@ patch -p1 -i /input/src/linuxptp-ts2phc-add-baudrate-option.patch
 
 make "-j$(nproc)"
 make install
-cp /usr/local/sbin/* /input/rootfs/sbin/
+cp /usr/local/sbin/* /input/rootfs/usr/sbin/
 
 echo "#######################################"
 echo "COMPILING UTILITIES"
 echo "#######################################"
-gcc /input/src/testptp.c -O2 -o /input/rootfs/sbin/testptp
+gcc /input/src/testptp.c -O2 -o /input/rootfs/usr/sbin/testptp
