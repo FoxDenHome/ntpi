@@ -21,7 +21,7 @@ start() {
                 --pidfile "${pidfile}" \
                 -- -c "${iface}" -s nmea -f "${cfgfile}"
 
-        chrt -a -p 70 "$(cat "${pidfile}")"
+        chrt -a -p 60 "$(cat "${pidfile}")"
 
         eend $? "Failed to start ts2phc"
 }
