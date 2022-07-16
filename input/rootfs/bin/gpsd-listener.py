@@ -20,6 +20,7 @@ rxset = [server]
 def close_socket(sock):
     if sock in rxset:
         rxset.remove(sock)
+        print("Closing client", sock)
     sock.close()
 
 
@@ -43,11 +44,13 @@ def handle_sockets():
                 conn.setblocking(0)
                 conn.setsockopt(IPPROTO_TCP, TCP_NODELAY, 1)
                 rxset.append(conn)
-                print("Accepted new client")
+                print("Accepted new client", conn)
                 continue
 
             try:
-                sock.recv(512)
+                data = sock.recv(512)
+                if not data:
+                    close_socket(sock)
             except:
                 close_socket(sock)
                 print_exc()
