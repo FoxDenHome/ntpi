@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from subprocess import check_call
 from sys import stderr
 from time import sleep
+from cffi import FFI
 
 LEAP_FILE = "/data/leap-seconds.list"
 LEAP_FILE_URL = "https://www.ietf.org/timezones/data/leap-seconds.list"
@@ -127,6 +128,63 @@ timeSource {self.time_source:#02x}
         ])
 
 
+"""
+	struct timex tx;
+
+	memset(&tx, 0, sizeof(tx));
+
+	tx.modes = ADJ_TAI;
+	tx.constant = offset;
+
+	return adjtimex(&tx);
+"""
+
+ADJ_TAI = 0x0080
+
+
+class KernelConfigurator(Configuator):
+    def __init__(self, leapfile):
+        self.leapfile = leapfile
+        self.ffi = FFI()
+        self.ffi.cdef("""
+typedef long time_t;
+typedef long suseconds_t;
+
+struct timex
+{
+    unsigned modes;
+    long offset, freq, maxerror, esterror;
+    int status;
+    long constant, precision, tolerance;
+    struct timeval time;
+    long tick, ppsfreq, jitter;
+    int shift;
+    long stabil, jitcnt, calcnt, errcnt, stbcnt;
+    int tai;
+    int __padding[11];
+};
+
+struct timeval
+{
+    time_t tv_sec;
+    suseconds_t tv_usec;
+};
+
+int adjtimex(struct timex *buf);
+""")
+        self.ffi_lib = self.ffi.dlopen(None)
+
+    def configure(self, did_update):
+        offset = self.leapfile.current_utc_tai_offset()
+
+        tx = self.ffi.new("struct timex*")
+        tx.modes = ADJ_TAI
+        tx.constant = offset
+        self.ffi_lib.adjtimex(tx)
+        if tx.tai != offset:
+            raise ValueError("Could not use adjtimex to update UTC-TAI offset")
+
+
 def print_stderr(msg):
     stderr.write(f"{msg}\n")
     stderr.flush()
@@ -147,6 +205,7 @@ def main():
             stderr.flush()
 
     add_configurator(PTP4LConfigurator)
+    add_configurator(KernelConfigurator)
 
     while True:
         stderr.write("Running check loop...\n")
