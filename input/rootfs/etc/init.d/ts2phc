@@ -5,6 +5,7 @@ command=/sbin/ts2phc
 pidfile="/var/run/ts2phc.pid"
 cfgfile=/etc/ptp4l.conf
 iface=eth0.2
+export PROMETHEUS_METRICS_FILE=/tmp/node-exporter/ts2phc.prom
 
 depend()
 {
@@ -17,9 +18,9 @@ start() {
         ebegin "Starting ts2phc"
     
         start-stop-daemon -m --background --start --quiet \
-                --exec "${command}" \
+                --exec /bin/ptp4l-sync-monitor.py \
                 --pidfile "${pidfile}" \
-                -- -c "${iface}" -s nmea -f "${cfgfile}"
+                -- "${command}" -c "${iface}" -s nmea -f "${cfgfile}" -m -q -l 7
 
         chrt -a -p 60 "$(cat "${pidfile}")"
 

@@ -22,5 +22,7 @@ start()
 
     mkdir -p /data/chrony && chown -R chrony:chrony /data/chrony
 
+    mkdir -p /tmp/node-expoter
+
     eend 0
 }

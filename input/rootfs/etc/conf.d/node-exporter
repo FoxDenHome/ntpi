@@ -4,4 +4,4 @@
 #
 # ARGS="--web.listen-address=':9100'"
 
-ARGS="--collector.time --collector.timex --collector.ntp"
+ARGS="--collector.time --collector.timex --collector.ntp --collector.textfile.directory=/tmp/node-exporter"
