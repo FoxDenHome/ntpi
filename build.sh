@@ -27,8 +27,8 @@ hash_check() {
 
 download_if_not_exist() {
     URL="$1"
+    HASH="$2"
     DEST="./input/download/$2"
-    HASH="$3"
 
     if [ `hash_check "$DEST" "$HASH"` != "0" ]
     then
@@ -55,8 +55,8 @@ export CMDLINE="console=tty1 root=/dev/root rootfstype=ext4 fsck.repair=yes ro r
 git rev-parse HEAD > input/rootfs/etc/image_commit
 date > input/rootfs/etc/image_date
 
-download_if_not_exist 'https://downloads.sourceforge.net/project/linuxptp/v3.1/linuxptp-3.1.1.tgz' 'linuxptp.tgz' '94d6855f9b7f2d8e9b0ca6d384e3fae6226ce6fc012dbad02608bdef3be1c0d9'
-download_if_not_exist 'https://timebeat.app/assets/packages/timebeat-1.4.4-arm64.deb' 'timebeat.deb' 'b1c8366847bcec6ae56a728dc60dda1675b6abab7ecc2ced51e1bba8f90f3b3a'
+download_if_not_exist 'https://downloads.sourceforge.net/project/linuxptp/v3.1/linuxptp-3.1.1.tgz' '94d6855f9b7f2d8e9b0ca6d384e3fae6226ce6fc012dbad02608bdef3be1c0d9' 'linuxptp.tgz'
+download_if_not_exist 'https://timebeat.app/assets/packages/timebeat-1.4.4-arm64.deb' 'b1c8366847bcec6ae56a728dc60dda1675b6abab7ecc2ced51e1bba8f90f3b3a' 'timebeat.deb'
 
 #docker buildx build --platform=linux/arm64 -t ntp-alpine-compiler compiler
 docker run --platform=linux/arm64 --rm -it --entrypoint=/input/compile.sh -v "$PWD/input:/input" ntp-alpine-compiler
