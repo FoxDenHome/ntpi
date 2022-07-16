@@ -7,15 +7,42 @@ rm -rf output && mkdir -p output
 rm -rf input/tmp && mkdir -p input/tmp
 mkdir -p input/download && rm -f input/download/*.tmp
 
-download_if_not_exist() {
-    URL="$1"
-    DEST="./input/download/$2"
+hash_check() {
+    FILE="$1"
+    HASH="$2"
 
     if [ ! -f "$DEST" ]
     then
+        echo 1
+    else
+        MEASURED_HASH="$(sha256sum -b "$FILE" | cut -d' ' -f1)"
+        if [ "$MEASURED_HASH" != "$HASH" ]
+        then
+            echo 2
+        else
+            echo 0
+        fi
+    fi
+}
+
+download_if_not_exist() {
+    URL="$1"
+    DEST="./input/download/$2"
+    HASH="$3"
+
+    if [ `hash_check "$DEST" "$HASH"` != "0" ]
+    then
         echo "Downloading $URL to $DEST"
         rm -f "$DEST.tmp"
+
         wget -O "$DEST.tmp" "$URL"
+        if [ `hash_check "$DEST" "$HASH"` != "0" ]
+        then
+            echo 'Hash mismatch on download!'
+            exit 1
+        fi
+
+        rm -f "$DEST"
         mv "$DEST.tmp" "$DEST"
     else
         echo "Skipping download of $URL to $DEST"
@@ -28,8 +55,9 @@ export CMDLINE="console=tty1 root=/dev/root rootfstype=ext4 fsck.repair=yes ro r
 git rev-parse HEAD > input/rootfs/etc/image_commit
 date > input/rootfs/etc/image_date
 
-download_if_not_exist 'https://downloads.sourceforge.net/project/linuxptp/v3.1/linuxptp-3.1.1.tgz' 'linuxptp.tgz'
-download_if_not_exist 'https://timebeat.app/assets/packages/timebeat-1.4.4-arm64.deb' 'timebeat.deb'
+download_if_not_exist 'https://downloads.sourceforge.net/project/linuxptp/v3.1/linuxptp-3.1.1.tgz' 'linuxptp.tgz' '94d6855f9b7f2d8e9b0ca6d384e3fae6226ce6fc012dbad02608bdef3be1c0d9'
+download_if_not_exist 'https://timebeat.app/assets/packages/timebeat-1.4.4-arm64.deb' 'timebeat.deb' 'b1c8366847bcec6ae56a728dc60dda1675b6abab7ecc2ced51e1bba8f90f3b3a'
+
 #docker buildx build --platform=linux/arm64 -t ntp-alpine-compiler compiler
 docker run --platform=linux/arm64 --rm -it --entrypoint=/input/compile.sh -v "$PWD/input:/input" ntp-alpine-compiler
 
