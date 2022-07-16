@@ -22,7 +22,7 @@ start()
 
     mkdir -p /data/chrony && chown -R chrony:chrony /data/chrony
 
-    mkdir -p /tmp/node-expoter
+    mkdir -p /tmp/node-exporter
 
     eend 0
 }
