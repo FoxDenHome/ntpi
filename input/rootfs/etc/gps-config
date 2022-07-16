@@ -9,5 +9,5 @@ ubxtool -p SAVE
 
 # Survey for accurate time at constant location
 ubxtool -e SURVEYIN
-# wait until done, check with "ubxtool -p TIM-SVIN" (active must be 0, valid must be 1 on UBX-TIM-SVIN)
+# wait until done, check with "-p TIM-SVIN | grep -A3 'UBX-TIM-SVIN" (active must be 0, valid must be 1 on UBX-TIM-SVIN)
 ubxtool -p SAVE
