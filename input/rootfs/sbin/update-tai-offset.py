@@ -128,17 +128,6 @@ timeSource {self.time_source:#02x}
         ])
 
 
-"""
-	struct timex tx;
-
-	memset(&tx, 0, sizeof(tx));
-
-	tx.modes = ADJ_TAI;
-	tx.constant = offset;
-
-	return adjtimex(&tx);
-"""
-
 ADJ_TAI = 0x0080
 
 
