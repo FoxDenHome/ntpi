@@ -1,4 +1,5 @@
-# Append -P 22 --device=/dev/ttyAMA0 to all
+# Auto-append necessary options
+alias ubxtool='/usr/bin/ubxtool -P 22 --device=/dev/ttyAMA0'
 
 # Examples for correct ubxtool config (might need -s BAUDRATE override)
 ubxtool -S 115200
@@ -9,5 +10,7 @@ ubxtool -p SAVE
 
 # Survey for accurate time at constant location
 ubxtool -e SURVEYIN
-# wait until done, check with "-p TIM-SVIN | grep -A3 'UBX-TIM-SVIN" (active must be 0, valid must be 1 on UBX-TIM-SVIN)
+# wait until done, check with as follows (ensure active is 0, valid is 1)
+ubxtool -p TIM-SVIN | grep -A3 'UBX-TIM-SVIN'
+# save when active 0, valid 1
 ubxtool -p SAVE
