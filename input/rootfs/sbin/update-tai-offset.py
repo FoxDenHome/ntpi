@@ -102,7 +102,7 @@ class PTP4LConfigurator(Configuator):
     def __init__(self, leapfile):
         self.leapfile = leapfile
         self.clock_class = 10
-        self.clock_accuracy = 0xf23
+        self.clock_accuracy = 0x23
         self.time_source = 0x20
         self.time_traceable = True
         self.frequency_traceable = False
