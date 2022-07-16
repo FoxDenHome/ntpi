@@ -4,7 +4,7 @@
 command=/usr/sbin/ptp4l
 pidfile="/var/run/ptp4l.pid"
 cfgfile=/etc/ptp4l.conf
-ifaces="-i eth0 -i eth0.2 -i eth0.6"
+ifaces="-i eth0 -i eth0.2 -i eth0.3 -i eth0.4 -i eth0.5 -i eth0.6"
 
 depend()
 {
