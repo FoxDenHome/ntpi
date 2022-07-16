@@ -22,7 +22,7 @@ start() {
         start-stop-daemon -m --background --start --quiet \
                 --exec /bin/ptp4l-sync-monitor.py \
                 --pidfile "${pidfile}" \
-                -- "${command}" -f "${cfgfile}" -s "${iface}" -c CLOCK_REALTIME -E ntpshm -M 1 -w -l 7 -m -q
+                -- "${command}" -f "${cfgfile}" -s "${iface}" -c CLOCK_REALTIME -E ntpshm -M 8 -w -l 7 -m -q
 
         chrt -a -p 55 "$(cat "${pidfile}")"
 
