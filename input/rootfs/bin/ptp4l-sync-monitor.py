@@ -37,6 +37,7 @@ class Ptp4LSyncSlave:
     name: str
     master: str
     offset: int
+    state: int
     frequency: int
     delay: Optional[int]
 
@@ -102,11 +103,13 @@ class Ptp4LSyncMonitor:
         fh.write("# TYPE ptp4l_sync_offset gauge\n")
         fh.write("# TYPE ptp4l_sync_frequency gauge\n")
         fh.write("# TYPE ptp4l_sync_delay gauge\n")
+        fh.write("# TYPE ptp4l_sync_state gauge\n")
 
         for slave in self.slaves.values():
             tags = f"{{slave=\"{slave.name}\",master=\"{slave.master}\"}}"
             fh.write(f"ptp4l_sync_offset{tags} {slave.offset}\n")
             fh.write(f"ptp4l_sync_frequency{tags} {slave.frequency}\n")
+            fh.write(f"ptp4l_sync_state{tags} {slave.state}\n")
             if slave.delay is not None:
                 fh.write(f"ptp4l_sync_delay{tags} {slave.delay}\n")
 
@@ -125,7 +128,7 @@ class Ptp4LSyncMonitor:
     def handle_line(self, line, stream):
 
         m = match(
-            "\\w+\\[[^\\]]+\\]:?\\s+([^\\s]+)\\s+([^\\s]+)\\s+offset\\s+([-+\\d]+)\\s+(s\d+)\s+freq\\s+([-+\\d]+)(?:\\s+delay\\s+([-+\\d]+))?", line)
+            "\\w+\\[[^\\]]+\\]:?\\s+([^\\s]+)\\s+([^\\s]+)\\s+offset\\s+([-+\\d]+)\\s+s(\d+)\s+freq\\s+([-+\\d]+)(?:\\s+delay\\s+([-+\\d]+))?", line)
         
         if not m:
             stream.write(line)
@@ -133,7 +136,7 @@ class Ptp4LSyncMonitor:
             return
         
         slave = Ptp4LSyncSlave(name=m[1], master=m[2],
-                             offset=int(m[3], 10), frequency=int(m[5], 10), delay=None)
+                             offset=int(m[3], 10),state=int(m[4], 10), frequency=int(m[5], 10), delay=None)
         if m[6]:
             slave.delay = int(m[6], 10)
 
