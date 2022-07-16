@@ -105,6 +105,11 @@ class Ptp4LSyncMonitor:
         fh.write("# TYPE ptp4l_sync_delay gauge\n")
         fh.write("# TYPE ptp4l_sync_state gauge\n")
 
+        fh.write("# HELP ptp4l_sync_offset PTP4L Sync offset in nanoseconds\n")
+        fh.write("# HELP ptp4l_sync_frequency PTP4L Sync frequency correction in ppb\n")
+        fh.write("# HELP ptp4l_sync_delay PTP4L Sync delay in ns\n")
+        fh.write("# HELP ptp4l_sync_state PTP4L Sync state (1 = unlocked, 2 = locked)\n")
+
         for slave in self.slaves.values():
             tags = f"{{slave=\"{slave.name}\",master=\"{slave.master}\"}}"
             fh.write(f"ptp4l_sync_offset{tags} {slave.offset}\n")
