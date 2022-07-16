@@ -4,7 +4,7 @@
 command=/sbin/ts2phc
 pidfile="/var/run/ts2phc.pid"
 cfgfile=/etc/ptp4l.conf
-iface=eth0.2
+iface=eth0
 export PROMETHEUS_METRICS_FILE=/tmp/node-exporter/ts2phc.prom
 
 depend()

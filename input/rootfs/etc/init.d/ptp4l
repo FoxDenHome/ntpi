@@ -4,7 +4,7 @@
 command=/sbin/ptp4l
 pidfile="/var/run/ptp4l.pid"
 cfgfile=/etc/ptp4l.conf
-iface=eth0.2
+ifaces="-i eth0 -i eth0.2 -i eth0.6"
 
 depend()
 {
@@ -19,7 +19,7 @@ start() {
         start-stop-daemon -m --background --start --quiet \
                 --exec "${command}" \
                 --pidfile "${pidfile}" \
-                -- -i "${iface}" -f "${cfgfile}"
+                -- $ifaces -f "${cfgfile}"
 
         chrt -a -p 50 "$(cat "${pidfile}")"
 
