@@ -1,14 +1,21 @@
 #!/bin/bash
 set -ex
 
-LINUXPTP_VERSION=3.1
-LINUXPTP_VERSION_FULL=3.1.1
+echo "#######################################"
+echo "EXTRACING TIMEBEAT"
+echo "#######################################"
+mkdir -p /tmp/timebeat-deb /tmp/timebeat-data
+ar vx /input/download/timebeat.deb --output=/tmp/timebeat-deb
+tar -C/tmp/timebeat-data -xf /tmp/timebeat-deb/data.*
+
+rm -rf /input/rootfs/usr/share/timebeat
+cp -r /tmp/timebeat-data/usr/share/timebeat /input/rootfs/usr/share/timebeat
+
 echo "#######################################"
 echo "COMPILING LINUXPTP"
 echo "#######################################"
 mkdir -p /tmp/linuxptp-src
-wget "http://downloads.sourceforge.net/project/linuxptp/v$LINUXPTP_VERSION/linuxptp-$LINUXPTP_VERSION_FULL.tgz" -O /tmp/linuxptp.tgz
-tar -C/tmp/linuxptp-src --strip-components=1 -xf /tmp/linuxptp.tgz
+tar -C/tmp/linuxptp-src --strip-components=1 -xf /input/download/linuxptp.tgz
 cd "/tmp/linuxptp-src"
 
 patch -p1 -i /input/src/linuxptp-ts2phc-add-baudrate-option.patch

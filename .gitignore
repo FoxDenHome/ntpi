@@ -2,6 +2,7 @@
 /output
 /input/rootfs/usr
 /testimg
+/input/tmp
+/input/download
 /input/rootfs/etc/image_commit
 /input/rootfs/etc/image_date
-/input/linuxptp-3.1.1.tgz

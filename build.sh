@@ -5,6 +5,22 @@ cd "$(dirname "$0")"
 
 rm -rf output && mkdir -p output
 rm -rf input/tmp && mkdir -p input/tmp
+mkdir -p input/download && rm -f input/download/*.tmp
+
+download_if_not_exist() {
+    URL="$1"
+    DEST="./input/download/$2"
+
+    if [ ! -f "$DEST" ]
+    then
+        echo "Downloading $URL to $DEST"
+        rm -f "$DEST.tmp"
+        wget -O "$DEST.tmp" "$URL"
+        mv "$DEST.tmp" "$DEST"
+    else
+        echo "Skipping download of $URL to $DEST"
+    fi
+}
 
 export DEFAULT_KERNEL_MODULES="8021q af_packet bridge dwc2 garp i2c-mux i2c-mux-pinctrl ipv6 llc pps-gpio pps-ldisc raspberrypi-hwmon roles rtc-pcf85063 stp"
 export CMDLINE="console=tty1 root=/dev/root rootfstype=ext4 fsck.repair=yes ro rootwait"
@@ -12,6 +28,8 @@ export CMDLINE="console=tty1 root=/dev/root rootfstype=ext4 fsck.repair=yes ro r
 git rev-parse HEAD > input/rootfs/etc/image_commit
 date > input/rootfs/etc/image_date
 
+download_if_not_exist 'https://downloads.sourceforge.net/project/linuxptp/v3.1/linuxptp-3.1.1.tgz' 'linuxptp.tgz'
+download_if_not_exist 'https://timebeat.app/assets/packages/timebeat-1.4.4-arm64.deb' 'timebeat.deb'
 #docker buildx build --platform=linux/arm64 -t ntp-alpine-compiler compiler
 docker run --platform=linux/arm64 --rm -it --entrypoint=/input/compile.sh -v "$PWD/input:/input" ntp-alpine-compiler
 
