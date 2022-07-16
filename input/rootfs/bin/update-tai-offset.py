@@ -61,7 +61,7 @@ class LeapFile():
         if (not force) and self.expiry is not None and (self.expiry >= min_expiry):
             return False
 
-        res = get(self.url)
+        res = get(url=self.url, timeout=10)
         res.raise_for_status()
         with open(self.file, "w") as fh:
             fh.write(res.text)
@@ -196,17 +196,10 @@ def main():
     add_configurator(PTP4LConfigurator)
     add_configurator(KernelConfigurator)
 
+    did_update = True
     while True:
         stderr.write("Running check loop...\n")
         stderr.flush()
-
-        did_update = False
-        try:
-            did_update = leapfile.update()
-        except Exception:
-            stderr.write("Error updating leapfile:\n")
-            print_exc(file=stderr)
-            stderr.flush()
 
         for configuator in configuators:
             try:
@@ -215,6 +208,13 @@ def main():
                 stderr.write(f"Error running configuator {configuator}:\n")
                 print_exc(file=stderr)
                 stderr.flush()
+
+        try:
+            did_update = leapfile.update()
+        except Exception:
+            stderr.write("Error updating leapfile:\n")
+            print_exc(file=stderr)
+            stderr.flush()
 
         stderr.write("Check loop complete!\n")
         stderr.flush()
