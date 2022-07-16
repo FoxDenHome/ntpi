@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from gps import gps, WATCH_ENABLE, WATCH_NMEA
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, IPPROTO_TCP, TCP_NODELAY
 from select import select
 from threading import Thread
 from traceback import print_exc
@@ -12,15 +12,15 @@ PORT = 9887
 server = socket(AF_INET, SOCK_STREAM)
 server.bind((IP, PORT))
 server.listen(5)
+server.setsockopt(IPPROTO_TCP, TCP_NODELAY, 1)
 
 rxset = [server]
-txset = []
 
 
 def close_socket(sock):
-    sock.close()
     if sock in rxset:
         rxset.remove(sock)
+    sock.close()
 
 
 def do_forward(nmea):
@@ -36,11 +36,12 @@ def do_forward(nmea):
 
 def handle_sockets():
     while True:
-        rxfds, txfds, exfds = select(rxset, txset, rxset)
+        rxfds, txfds, exfds = select(rxset, [], rxset)
         for sock in rxfds:
             if sock is server:
                 conn, _ = server.accept()
                 conn.setblocking(0)
+                conn.setsockopt(IPPROTO_TCP, TCP_NODELAY, 1)
                 rxset.append(conn)
                 print("Accepted new client")
                 continue
