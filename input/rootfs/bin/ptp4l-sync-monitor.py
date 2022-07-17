@@ -149,13 +149,13 @@ class Ptp4LSyncMonitor:
         rename(self.metrics_file_tmp, self.metrics_file)
 
     def handle_line(self, line, stream):
+        stream.write(line)
+        stream.flush()
 
         m = match(
             "\\w+\\[[^\\]]+\\]:?\\s+([^\\s]+)\\s+([^\\s]+)\\s+offset\\s+([-+\\d]+)\\s+s(\d+)\s+freq\\s+([-+\\d]+)(?:\\s+delay\\s+([-+\\d]+))?", line)
 
         if not m:
-            stream.write(line)
-            stream.flush()
             return
 
         slave = Ptp4LSyncSlave(time=datetime.now().timestamp(), name=m[1], master=m[2],
