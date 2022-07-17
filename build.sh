@@ -10,6 +10,7 @@ export CMDLINE='console=tty1 root=/dev/root rootfstype=ext4 fsck.repair=yes ro r
 
 git rev-parse HEAD > input/rootfs/etc/image_commit
 date > input/rootfs/etc/image_date
+git ls-files input/rootfs/ --stage --full-name > input/rootfs-ls-files
 
 docker pull ghcr.io/raspi-alpine/builder
 docker buildx build --platform=linux/arm64 -t customized_alpine_builder builderimage

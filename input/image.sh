@@ -65,17 +65,12 @@ revert_data_override '/etc/conf.d/dropbear'
 # Copy our rootfs additions
 cp -d -r "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
 
-LS_FILES="$INPUT_PATH/rootfs-ls-files"
-if [ -f "$LS_FILES" ]
-then
-    echo 'ls-files output found, fixing chmod...'
-    while read lineraw; do
-        line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
-        TMODE="$(echo -n "$line" | cut -d' ' -f1 | sed 's/^100//')"
-        TPATH="$(echo -n "$line" | cut -d' ' -f4 | cut -d'/' '-f3-')"
-        chmod "$TMODE" "$ROOTFS_PATH/$TPATH"
-    done < "$LS_FILES"
-fi
+while read lineraw; do
+    line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
+    TMODE="$(echo -n "$line" | cut -d' ' -f1 | sed 's/^100//')"
+    TPATH="$(echo -n "$line" | cut -d' ' -f4 | cut -d'/' '-f3-')"
+    chmod "$TMODE" "$ROOTFS_PATH/$TPATH"
+done < "$INPUT_PATH/rootfs-ls-files"
 
 chroot_exec rc-update add ptp4l
 chroot_exec rc-update add phc2sys
