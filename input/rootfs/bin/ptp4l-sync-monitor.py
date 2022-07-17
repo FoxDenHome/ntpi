@@ -154,7 +154,7 @@ class Ptp4LSyncMonitor:
             stream.flush()
             return
         
-        slave = Ptp4LSyncSlave(time=datetime.utcnow().timestamp(), name=m[1], master=m[2],
+        slave = Ptp4LSyncSlave(time=datetime.now().timestamp(), name=m[1], master=m[2],
                              offset=int(m[3], 10),state=int(m[4], 10), frequency=int(m[5], 10), delay=None)
         if m[6]:
             slave.delay = int(m[6], 10)
