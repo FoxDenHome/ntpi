@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 
 from dataclasses import dataclass
+from datetime import datetime
 from os import getenv, rename, unlink
 from sys import stderr, stdout, argv
 from subprocess import Popen, PIPE
 from threading import Thread
 from queue import Queue
 from time import sleep
-from signal import SIGINT
+from signal import alarm, signal, SIGALRM, SIGTERM
 from re import match
 from typing import Optional
+
+
+NO_UPDATE_TIMEOUT = 15
 
 
 class AsynchronousFileReader(Thread):
@@ -40,6 +44,7 @@ class Ptp4LSyncSlave:
     state: int
     frequency: int
     delay: Optional[int]
+    time: float
 
 
 class Ptp4LSyncMonitor:
@@ -53,17 +58,22 @@ class Ptp4LSyncMonitor:
         self.metrics_file = metrics_file
         self.metrics_file_tmp = f"{metrics_file}.tmp"
         self.process = None
-        self.console_line_handlers = []
-        self.chat_handlers = []
         self.slaves = {}
+        signal(SIGALRM, self.sighandler)
 
     def send_console(self, line):
         self.process.stdin.write(f"{line.strip()}\n")
         self.process.stdin.flush()
 
+    def reset_alarm(self):
+        alarm(NO_UPDATE_TIMEOUT)
+
+    def sighandler(self, _, __):
+        self.stop()
+
     def stop(self):
         if self.process is not None:
-            self.process.send_signal(SIGINT)
+            self.process.send_signal(SIGTERM)
 
     def wait(self):
         if self.process is not None:
@@ -77,6 +87,8 @@ class Ptp4LSyncMonitor:
         stdout_reader.start()
         stderr_reader = AsynchronousFileReader(self.process.stderr)
         stderr_reader.start()
+
+        self.reset_alarm()
 
         while not stdout_reader.eof() or not stderr_reader.eof():
             while not stdout_reader.queue.empty():
@@ -98,6 +110,7 @@ class Ptp4LSyncMonitor:
 
         self.process.wait()
         self.process = None
+        self.slaves = {}
 
     def produce_prometheus_metrics(self, fh):
         fh.write("# TYPE ptp4l_sync_offset gauge\n")
@@ -111,12 +124,13 @@ class Ptp4LSyncMonitor:
         fh.write("# HELP ptp4l_sync_state PTP4L Sync state (1 = unlocked, 2 = locked)\n")
 
         for slave in self.slaves.values():
+            prom_timestamp = int(slave.time * 1000)
             tags = f"{{slave=\"{slave.name}\",master=\"{slave.master}\"}}"
-            fh.write(f"ptp4l_sync_offset{tags} {slave.offset}\n")
-            fh.write(f"ptp4l_sync_frequency{tags} {slave.frequency}\n")
-            fh.write(f"ptp4l_sync_state{tags} {slave.state}\n")
+            fh.write(f"ptp4l_sync_offset{tags} {slave.offset} {prom_timestamp}\n")
+            fh.write(f"ptp4l_sync_frequency{tags} {slave.frequency} {prom_timestamp}\n")
+            fh.write(f"ptp4l_sync_state{tags} {slave.state} {prom_timestamp}\n")
             if slave.delay is not None:
-                fh.write(f"ptp4l_sync_delay{tags} {slave.delay}\n")
+                fh.write(f"ptp4l_sync_delay{tags} {slave.delay} {prom_timestamp}\n")
 
 
     def write_prometheus_metrics(self):
@@ -140,19 +154,21 @@ class Ptp4LSyncMonitor:
             stream.flush()
             return
         
-        slave = Ptp4LSyncSlave(name=m[1], master=m[2],
+        slave = Ptp4LSyncSlave(time=datetime.utcnow().timestamp(), name=m[1], master=m[2],
                              offset=int(m[3], 10),state=int(m[4], 10), frequency=int(m[5], 10), delay=None)
         if m[6]:
             slave.delay = int(m[6], 10)
 
         self.slaves[slave.name] = slave
 
+        self.reset_alarm()
         self.write_prometheus_metrics()
 
 
 def main():
     mon = Ptp4LSyncMonitor(metrics_file=getenv("PROMETHEUS_METRICS_FILE"), args=argv[1:])
-    mon.run()
+    while True:
+        mon.run()
 
 
 if __name__ == "__main__":
