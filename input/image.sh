@@ -73,7 +73,7 @@ while read lineraw; do
 done < "$INPUT_PATH/rootfs-ls-files"
 
 chroot_exec rc-update add ptp4l
-chroot_exec rc-update add phc2sys
+#chroot_exec rc-update add phc2sys
 chroot_exec rc-update add ts2phc
 chroot_exec rc-update add update-tai-offset
 chroot_exec rc-update add gpsd-listener
