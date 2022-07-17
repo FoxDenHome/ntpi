@@ -1,8 +1,7 @@
 .DS_Store
 /output
 /testimg
-/input/tmp
-/input/download
 /input/rootfs/etc/image_commit
 /input/rootfs/etc/image_date
 /input/rootfs-ls-files
+/cache

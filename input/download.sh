@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-mkdir -p "$INPUT_PATH/download" && rm -f "$INPUT_PATH/download/"*.tmp
+mkdir -p "$CACHE_PATH/download" && rm -f "$CACHE_PATH/download/"*.tmp
 
 hash_check() {
     local FILE="$1"
@@ -25,7 +25,7 @@ hash_check() {
 download_if_needed() {
     local URL="$1"
     local HASH="$2"
-    local DEST="$INPUT_PATH/download/$3"
+    local DEST="$CACHE_PATH/download/$3"
 
     if [ `hash_check "$DEST" "$HASH"` != "0" ]
     then
