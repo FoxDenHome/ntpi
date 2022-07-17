@@ -73,7 +73,7 @@ then
         line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
         TMODE="$(echo -n "$line" | cut -d' ' -f1 | sed 's/^100//')"
         TPATH="$(echo -n "$line" | cut -d' ' -f4 | cut -d'/' '-f3-')"
-        chroot_exec chmod "$TMODE" "/$TPATH"
+        chmod "$TMODE" "$ROOTFS_PATH/$TPATH"
     done < "$LS_FILES"
 fi
 
@@ -85,8 +85,8 @@ chroot_exec rc-update add gpsd-listener
 
 ln -s '/data/etc/adjtime' "$ROOTFS_PATH/etc/adjtime"
 
-IMAGE_COMMIT="$(cat "$ROOTFS_PATH/etc/image_commit" | tr -d "\r\n\t ")"
-IMAGE_DATE="$(cat "$ROOTFS_PATH/etc/image_date" | tr -d "\r\n\t ")"
+IMAGE_COMMIT="$(cat "$ROOTFS_PATH/etc/image_commit" | tr -d "\r\n\t")"
+IMAGE_DATE="$(cat "$ROOTFS_PATH/etc/image_date" | tr -d "\r\n\t")"
 sed "s/__IMAGE_COMMIT__/$IMAGE_COMMIT/" -i "$ROOTFS_PATH/etc/motd"
 sed "s/__IMAGE_DATE__/$IMAGE_DATE/" -i "$ROOTFS_PATH/etc/motd"
 
