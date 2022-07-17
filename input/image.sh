@@ -3,7 +3,7 @@ set -e
 
 # Configure boot process
 mkenvimage -s 0x4000 -o "$BOOTFS_PATH/uboot.env" "$INPUT_PATH/uboot.env"
-cp "$INPUT_PATH/usercfg.txt" "$BOOTFS_PATH/usercfg.txt"
+cat "$INPUT_PATH/usercfg.txt" > "$BOOTFS_PATH/usercfg.txt"
 echo 'include usercfg.txt' >> "$BOOTFS_PATH/config.txt"
 
 # Install packages
@@ -63,7 +63,19 @@ revert_data_ln '/root'
 revert_data_override '/etc/conf.d/dropbear'
 
 # Copy our rootfs additions
-cp -r "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
+cp -d -r "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
+
+LS_FILES="$INPUT_PATH/rootfs-ls-files"
+if [ -f "$LS_FILES" ]
+then
+    echo 'ls-files output found, fixing chmod...'
+    while read lineraw; do
+        line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
+        TMODE="$(echo -n "$line" | cut -d' ' -f1 | sed 's/^100//')"
+        TPATH="$(echo -n "$line" | cut -d' ' -f4 | cut -d'/' '-f3-')"
+        chroot_exec chmod "$TMODE" "/$TPATH"
+    done < "$LS_FILES"
+fi
 
 chroot_exec rc-update add ptp4l
 chroot_exec rc-update add phc2sys
@@ -73,8 +85,8 @@ chroot_exec rc-update add gpsd-listener
 
 ln -s '/data/etc/adjtime' "$ROOTFS_PATH/etc/adjtime"
 
-IMAGE_COMMIT="$(cat "$ROOTFS_PATH/etc/image_commit")"
-IMAGE_DATE="$(cat "$ROOTFS_PATH/etc/image_date")"
+IMAGE_COMMIT="$(cat "$ROOTFS_PATH/etc/image_commit" | tr -d "\r\n\t ")"
+IMAGE_DATE="$(cat "$ROOTFS_PATH/etc/image_date" | tr -d "\r\n\t ")"
 sed "s/__IMAGE_COMMIT__/$IMAGE_COMMIT/" -i "$ROOTFS_PATH/etc/motd"
 sed "s/__IMAGE_DATE__/$IMAGE_DATE/" -i "$ROOTFS_PATH/etc/motd"
 
