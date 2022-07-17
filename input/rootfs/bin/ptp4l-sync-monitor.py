@@ -14,6 +14,7 @@ from typing import Optional
 
 
 NO_UPDATE_TIMEOUT = 15
+METRIC_TIMEOUT = 5
 
 
 class AsynchronousFileReader(Thread):
@@ -119,43 +120,46 @@ class Ptp4LSyncMonitor:
         fh.write("# TYPE ptp4l_sync_state gauge\n")
 
         fh.write("# HELP ptp4l_sync_offset PTP4L Sync offset in nanoseconds\n")
-        fh.write("# HELP ptp4l_sync_frequency PTP4L Sync frequency correction in ppb\n")
+        fh.write(
+            "# HELP ptp4l_sync_frequency PTP4L Sync frequency correction in ppb\n")
         fh.write("# HELP ptp4l_sync_delay PTP4L Sync delay in ns\n")
-        fh.write("# HELP ptp4l_sync_state PTP4L Sync state (1 = unlocked, 2 = locked)\n")
+        fh.write(
+            "# HELP ptp4l_sync_state PTP4L Sync state (1 = unlocked, 2 = locked)\n")
 
+        now_time = datetime.now().timestamp()
         for slave in self.slaves.values():
-            prom_timestamp = int(slave.time * 1000)
+            if now_time - METRIC_TIMEOUT > slave.time:
+                continue
             tags = f"{{slave=\"{slave.name}\",master=\"{slave.master}\"}}"
-            fh.write(f"ptp4l_sync_offset{tags} {slave.offset} {prom_timestamp}\n")
-            fh.write(f"ptp4l_sync_frequency{tags} {slave.frequency} {prom_timestamp}\n")
-            fh.write(f"ptp4l_sync_state{tags} {slave.state} {prom_timestamp}\n")
+            fh.write(f"ptp4l_sync_offset{tags} {slave.offset}\n")
+            fh.write(f"ptp4l_sync_frequency{tags} {slave.frequency}\n")
+            fh.write(f"ptp4l_sync_state{tags} {slave.state}\n")
             if slave.delay is not None:
-                fh.write(f"ptp4l_sync_delay{tags} {slave.delay} {prom_timestamp}\n")
-
+                fh.write(f"ptp4l_sync_delay{tags} {slave.delay}\n")
 
     def write_prometheus_metrics(self):
         with open(self.metrics_file_tmp, "w") as fh:
             self.produce_prometheus_metrics(fh)
-    
+
         try:
             unlink(self.metrics_file)
         except FileNotFoundError:
             pass
-    
+
         rename(self.metrics_file_tmp, self.metrics_file)
 
     def handle_line(self, line, stream):
 
         m = match(
             "\\w+\\[[^\\]]+\\]:?\\s+([^\\s]+)\\s+([^\\s]+)\\s+offset\\s+([-+\\d]+)\\s+s(\d+)\s+freq\\s+([-+\\d]+)(?:\\s+delay\\s+([-+\\d]+))?", line)
-        
+
         if not m:
             stream.write(line)
             stream.flush()
             return
-        
+
         slave = Ptp4LSyncSlave(time=datetime.now().timestamp(), name=m[1], master=m[2],
-                             offset=int(m[3], 10),state=int(m[4], 10), frequency=int(m[5], 10), delay=None)
+                               offset=int(m[3], 10), state=int(m[4], 10), frequency=int(m[5], 10), delay=None)
         if m[6]:
             slave.delay = int(m[6], 10)
 
@@ -166,7 +170,8 @@ class Ptp4LSyncMonitor:
 
 
 def main():
-    mon = Ptp4LSyncMonitor(metrics_file=getenv("PROMETHEUS_METRICS_FILE"), args=argv[1:])
+    mon = Ptp4LSyncMonitor(metrics_file=getenv(
+        "PROMETHEUS_METRICS_FILE"), args=argv[1:])
     while True:
         mon.run()
 
