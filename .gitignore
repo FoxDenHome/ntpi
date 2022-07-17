@@ -1,6 +1,5 @@
 .DS_Store
 /output
-/input/rootfs/usr
 /testimg
 /input/tmp
 /input/download
