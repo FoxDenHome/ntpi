@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from gps import gps, WATCH_ENABLE, WATCH_NMEA
-from socket import socket, AF_INET, SOCK_STREAM, IPPROTO_TCP, TCP_NODELAY
+from socket import socket, AF_INET, SOCK_STREAM, IPPROTO_TCP, TCP_NODELAY, SOL_SOCKET, SO_REUSEADDR
 from select import select
 from threading import Thread
 from traceback import print_exc
@@ -10,6 +10,7 @@ from time import sleep
 IP = "127.0.0.1"
 PORT = 9887
 server = socket(AF_INET, SOCK_STREAM)
+server.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 server.bind((IP, PORT))
 server.listen(5)
 server.setsockopt(IPPROTO_TCP, TCP_NODELAY, 1)
