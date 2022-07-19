@@ -1,14 +1,14 @@
 #!/bin/sh
 set -ex
 
-echo "#######################################"
-echo "EXTRACING TIMEBEAT"
-echo "#######################################"
-mkdir -p /tmp/timebeat-deb /tmp/timebeat-data
-ar vx "$CACHE_PATH/download/timebeat.deb" --output=/tmp/timebeat-deb
-tar -C/tmp/timebeat-data -xf /tmp/timebeat-deb/data.*
+#echo "#######################################"
+#echo "EXTRACING TIMEBEAT"
+#echo "#######################################"
+#mkdir -p /tmp/timebeat-deb /tmp/timebeat-data
+#ar vx "$CACHE_PATH/download/timebeat.deb" --output=/tmp/timebeat-deb
+#tar -C/tmp/timebeat-data -xf /tmp/timebeat-deb/data.*
 
-cp -r /tmp/timebeat-data/usr/share/timebeat "$ROOTFS_PATH/usr/share/timebeat"
+#cp -r /tmp/timebeat-data/usr/share/timebeat "$ROOTFS_PATH/usr/share/timebeat"
 
 echo "#######################################"
 echo "COMPILING LINUXPTP"
