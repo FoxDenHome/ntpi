@@ -1,2 +1,2 @@
 #!/bin/sh
-exec watch 'cat /tmp/node-exporter/*.prom | grep -vF "#" | grep -F _offset ; echo ; echo ; chronyc -n sourcestats'
+exec watch 'cat /tmp/node-exporter/*.prom | grep -vF "#" | grep -F _offset ; echo ; echo ; chronyc -n sources'
