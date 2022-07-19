@@ -9,14 +9,16 @@ echo 'include usercfg.txt' >> "$BOOTFS_PATH/config.txt"
 # Install packages
 chroot_exec apk update
 chroot_exec apk upgrade
-chroot_exec apk add pps-tools bridge-utils ntpsec htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat
+chroot_exec apk add pps-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat
 
 # Run compilation and inclusion steps for external code
 "$INPUT_PATH/download.sh"
 "$INPUT_PATH/compile.sh"
 
 # Configure services
+chroot_exec rc-update del ntpd default
 chroot_exec rc-update del ab_clock default
+chroot_exec rc-update add chronyd
 chroot_exec rc-update add node-exporter
 chroot_exec rc-update add hwclock
 chroot_exec rc-update add keepalived
