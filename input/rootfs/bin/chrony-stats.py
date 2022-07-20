@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from os import getenv
+from os import getenv, rename, unlink
 from subprocess import check_output
 from traceback import print_exc
 from time import sleep
@@ -25,7 +25,7 @@ Leap status     : Normal
 
 CHRONY_COLUMNS = [
     "refid_num",
-    False, #"refid_str",
+    False,  # "refid_str",
     "stratum",
     "ref_time",
     "system_time_offset",
@@ -37,11 +37,13 @@ CHRONY_COLUMNS = [
     "root_delay",
     "root_dispersion",
     "update_interval",
-    False, #"leap_status",
+    False,  # "leap_status",
 ]
 
+
 def process_chrony_stats():
-    stats = check_output(["chronyc", "-c", "-n", "tracking"], encoding="utf-8").strip().split(",")
+    stats = check_output(["chronyc", "-c", "-n", "tracking"],
+                         encoding="utf-8").strip().split(",")
 
     res = []
     for idx, val in enumerate(stats):
@@ -51,16 +53,22 @@ def process_chrony_stats():
 
     return "\n".join(res)
 
+
 def main():
     PROMETHEUS_METRICS_FILE = getenv("PROMETHEUS_METRICS_FILE")
+    PROMETHEUS_METRICS_FILE_TMP = f"{PROMETHEUS_METRICS_FILE}.tmp"
     while True:
         try:
             stats = process_chrony_stats()
-            with open(PROMETHEUS_METRICS_FILE, "w") as fh:
-                fh.write(stats)
+            with open(PROMETHEUS_METRICS_FILE_TMP, "w") as fh:
+                fh.write(f"{stats}\n")
+
+            unlink(PROMETHEUS_METRICS_FILE)
+            rename(PROMETHEUS_METRICS_FILE_TMP, PROMETHEUS_METRICS_FILE)
         except:
             print_exc()
         sleep(10)
+
 
 if __name__ == "__main__":
     main()
