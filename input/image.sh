@@ -79,6 +79,7 @@ chroot_exec rc-update add ptp4l
 chroot_exec rc-update add ts2phc
 chroot_exec rc-update add update-tai-offset
 chroot_exec rc-update add gpsd-listener
+chroot_exec rc-update add chrony-stats
 
 ln -s '/data/etc/adjtime' "$ROOTFS_PATH/etc/adjtime"
 
