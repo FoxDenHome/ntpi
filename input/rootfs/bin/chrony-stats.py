@@ -63,7 +63,11 @@ def main():
             with open(PROMETHEUS_METRICS_FILE_TMP, "w") as fh:
                 fh.write(f"{stats}\n")
 
-            unlink(PROMETHEUS_METRICS_FILE)
+            try:
+                unlink(PROMETHEUS_METRICS_FILE)
+            except FileNotFoundError:
+                pass
+
             rename(PROMETHEUS_METRICS_FILE_TMP, PROMETHEUS_METRICS_FILE)
         except:
             print_exc()
