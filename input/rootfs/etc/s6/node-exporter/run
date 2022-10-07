@@ -1,0 +1,2 @@
+#!/bin/sh
+exec s6-setuidgid prometheus /usr/bin/node_exporter --collector.time --collector.timex --collector.ntp --collector.textfile.directory=/tmp/node-exporter
