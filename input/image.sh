@@ -9,7 +9,7 @@ echo 'include usercfg.txt' >> "$BOOTFS_PATH/config.txt"
 # Install packages
 chroot_exec apk update
 chroot_exec apk upgrade
-chroot_exec apk add pps-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat
+chroot_exec apk add s6 s6-linux-init pps-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat
 
 # Run compilation and inclusion steps for external code
 "$INPUT_PATH/download.sh"
