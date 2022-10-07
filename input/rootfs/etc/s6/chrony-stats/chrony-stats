@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export PROMETHEUS_METRICS_FILE=/tmp/node-exporter/chrony.prom
+
+exec s6-setuidgid nobody /bin/chrony-stats.py

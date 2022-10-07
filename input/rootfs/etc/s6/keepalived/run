@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/sbin/keepalived --dont-fork --use-file=/etc/keepalived/keepalived.conf

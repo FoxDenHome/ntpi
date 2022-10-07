@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/sbin/chronyd -f /etc/chrony/chrony.conf -m -P 99

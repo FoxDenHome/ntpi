@@ -9,7 +9,12 @@ echo 'include usercfg.txt' >> "$BOOTFS_PATH/config.txt"
 # Install packages
 chroot_exec apk update
 chroot_exec apk upgrade
-chroot_exec apk add s6 s6-linux-init pps-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat
+chroot_exec apk add s6 s6-openrc pps-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat
+
+# Swap to s6 init system
+#chroot_exec rm -rf /etc/s6-linux-init/current
+#chroot_exec s6-linux-init-maker -1 -G "/sbin/agetty --autologin root 115200 ttyAMA0" /etc/s6-linux-init/current
+#cp -a "$ROOTFS_PATH/etc/s6-linux-init/current/bin/"* "$ROOTFS_PATH/sbin/"
 
 # Run compilation and inclusion steps for external code
 "$INPUT_PATH/download.sh"
@@ -18,12 +23,14 @@ chroot_exec apk add s6 s6-linux-init pps-tools bridge-utils chrony htop curl scr
 # Configure services
 chroot_exec rc-update del ntpd default
 chroot_exec rc-update del ab_clock default
-chroot_exec rc-update add chronyd
-chroot_exec rc-update add node-exporter
-chroot_exec rc-update add hwclock
-chroot_exec rc-update add keepalived
-chroot_exec rc-update add gpsd
-chroot_exec rc-update add crond
+chroot_exec rc-update add s6 default
+
+#chroot_exec rc-update del chronyd
+#chroot_exec rc-update del node-exporter
+#chroot_exec rc-update del hwclock
+#chroot_exec rc-update del keepalived
+#chroot_exec rc-update del gpsd
+#chroot_exec rc-update del crond
 
 # Configure kernel modules
 echo -n > "$ROOTFS_PATH/etc/modules"
@@ -74,12 +81,12 @@ while read lineraw; do
     chmod "$TMODE" "$ROOTFS_PATH/$TPATH"
 done < "$INPUT_PATH/rootfs-ls-files"
 
-chroot_exec rc-update add ptp4l
-#chroot_exec rc-update add phc2sys
-chroot_exec rc-update add ts2phc
-chroot_exec rc-update add update-tai-offset
-chroot_exec rc-update add gpsd-listener
-chroot_exec rc-update add chrony-stats
+#chroot_exec rc-update add ptp4l
+##chroot_exec rc-update add phc2sys
+#chroot_exec rc-update add ts2phc
+#chroot_exec rc-update add update-tai-offset
+#chroot_exec rc-update add gpsd-listener
+#chroot_exec rc-update add chrony-stats
 
 ln -s '/data/etc/adjtime' "$ROOTFS_PATH/etc/adjtime"
 

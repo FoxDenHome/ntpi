@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/sbin/gpsd -N -n -s 115200 /dev/ttyAMA0 /dev/pps0
