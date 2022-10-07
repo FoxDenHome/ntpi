@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+cp -a /etc/s6/* /run/services/
+
+exec /lib/s6/s6-svscanboot "$@"
