@@ -5,8 +5,7 @@ echo -n 'Checking gpsd... '
 if ! timeout 5s gpspipe -w -n 5 > /dev/null
 then
 	echo 'FAIL! Restarting...'
-	killall gpsd
-	/etc/init.d/gpsd restart
+	s6-svc -k -wr /run/service/gpsd
 else
 	echo 'OK.'
 fi
