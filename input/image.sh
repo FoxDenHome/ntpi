@@ -21,9 +21,6 @@ chroot_exec rc-update del ab_clock default
 chroot_exec rc-update add s6 default
 chroot_exec rc-update add hwclock
 
-#chroot_exec rc-update del node-exporter
-#chroot_exec rc-update del crond
-
 # Configure kernel modules
 echo -n > "$ROOTFS_PATH/etc/modules"
 for mod in ${DEFAULT_KERNEL_MODULES}
