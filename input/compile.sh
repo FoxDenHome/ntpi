@@ -1,6 +1,9 @@
 #!/bin/sh
 set -ex
 
+export EXTRA_CFLAGS="-O2 -flto"
+export EXTRA_LDFLAGS="-flto"
+
 #echo "#######################################"
 #echo "EXTRACING TIMEBEAT"
 #echo "#######################################"
@@ -26,4 +29,4 @@ cp /usr/local/sbin/* "$ROOTFS_PATH/usr/sbin/"
 echo "#######################################"
 echo "COMPILING UTILITIES"
 echo "#######################################"
-gcc "$INPUT_PATH/src/testptp.c" -O2 -o "$ROOTFS_PATH/usr/sbin/testptp"
+gcc "$INPUT_PATH/src/testptp.c" $EXTRA_CFLAGS -o "$ROOTFS_PATH/usr/sbin/testptp"
