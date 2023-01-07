@@ -57,7 +57,7 @@ class LeapFile():
         except FileNotFoundError:
             pass
 
-        min_expiry = datetime.utcnow() - self.renewal_timeout
+        min_expiry = datetime.utcnow() + self.renewal_timeout
         if (not force) and self.expiry is not None and (self.expiry >= min_expiry):
             return False
 
