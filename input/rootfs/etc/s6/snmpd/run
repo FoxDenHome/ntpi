@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/sbin/snmpd -f -c /data/snmpd.conf -LSwd -Lf /dev/null
