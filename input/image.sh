@@ -56,7 +56,6 @@ revert_data_ln '/etc/network/interfaces'
 sed 's~/data/etc/~/tmp/~g' -i "$ROOTFS_PATH/etc/udhcpc/udhcpc.conf"
 revert_data_ln '/etc/localtime'
 revert_data_ln '/etc/timezone'
-revert_data_ln '/etc/shadow'
 revert_data_ln '/root'
 revert_data_override '/etc/conf.d/dropbear'
 
