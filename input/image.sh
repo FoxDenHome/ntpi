@@ -16,6 +16,7 @@ chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils chrony hto
 "$INPUT_PATH/compile.sh"
 
 # Configure services
+chroot_exec rc-update del rngd sysinit
 chroot_exec rc-update del ntpd default
 chroot_exec rc-update del ab_clock default
 chroot_exec rc-update add s6 default
