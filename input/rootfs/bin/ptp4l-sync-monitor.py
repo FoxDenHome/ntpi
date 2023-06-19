@@ -153,7 +153,7 @@ class Ptp4LSyncMonitor:
         stream.flush()
 
         m = match(
-            "\\w+\\[[^\\]]+\\]:?\\s+([^\\s]+)\\s+([^\\s]+)\\s+offset\\s+([-+\\d]+)\\s+s(\d+)\s+freq\\s+([-+\\d]+)(?:\\s+delay\\s+([-+\\d]+))?", line)
+            "\\w+\\[[^\\]]+\\]:?\\s+([^\\s]+)(?:\\s+([^\\s]+))?\\s+offset\\s+([-+\\d]+)\\s+s(\d+)\s+freq\\s+([-+\\d]+)(?:\\s+delay\\s+([-+\\d]+))?", line)
 
         if not m:
             return
