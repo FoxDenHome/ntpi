@@ -193,7 +193,7 @@ def main():
             print_exc()
             stderr.flush()
 
-    add_configurator(PTP4LConfigurator)
+    #add_configurator(PTP4LConfigurator)
     add_configurator(KernelConfigurator)
 
     did_update = True
