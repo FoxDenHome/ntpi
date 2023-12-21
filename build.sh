@@ -14,4 +14,4 @@ git ls-files input/rootfs/ --stage --full-name > input/rootfs-ls-files
 
 docker pull --platform=linux/arm64 ghcr.io/raspi-alpine/builder:latest
 docker buildx build --platform=linux/arm64 -t customized_alpine_builder builderimage --load
-docker run --platform=linux/arm64 --rm -it -e ALPINE_BRANCH=v3.19 -e CACHE_PATH=/cache -e DEFAULT_HOSTNAME=ntp -e ARCH=aarch64 -e DEFAULT_TIMEZONE=America/Los_Angeles -e CMDLINE -e DEFAULT_KERNEL_MODULES -e SIZE_ROOT_PART=1000M -e SIZE_ROOT_FS=0 -v "$PWD/cache:/cache" -v "$PWD/input:/input" -v "$PWD/output:/output" customized_alpine_builder
+docker run --platform=linux/arm64 --rm -it -e CACHE_PATH=/cache -e DEFAULT_HOSTNAME=ntpi -e ARCH=aarch64 -e DEFAULT_TIMEZONE=America/Los_Angeles -e CMDLINE -e DEFAULT_KERNEL_MODULES -e SIZE_ROOT_PART=1000M -e SIZE_ROOT_FS=0 -v "$PWD/cache:/cache" -v "$PWD/input:/input" -v "$PWD/output:/output" customized_alpine_builder
