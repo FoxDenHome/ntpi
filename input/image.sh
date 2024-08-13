@@ -57,8 +57,12 @@ revert_data_ln '/etc/network/interfaces'
 sed 's~/data/etc/~/tmp/~g' -i "$ROOTFS_PATH/etc/udhcpc/udhcpc.conf"
 revert_data_ln '/etc/localtime'
 revert_data_ln '/etc/timezone'
-revert_data_ln '/root'
 revert_data_override '/etc/conf.d/dropbear'
+
+rm -rf "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
+mkdir -p "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
+chown 0:0 "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
+chmod 700 "$ROOTFS_PATH/root"
 
 # Copy our rootfs additions
 cp -d -r "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
@@ -85,11 +89,12 @@ add_user() {
     chroot_exec adduser -D "$ADDUSER"
     chroot_exec adduser "$ADDUSER" sudo
 
+    chroot_exec rm -rf "/home/$ADDUSER"
     chroot_exec mkdir -p "/home/$ADDUSER/.ssh"
-    wget "https://raw.githubusercontent.com/FoxDenHome/sshkeys/main/$ADDUSER" -O "$ROOTFS_PATH/home/$ADDUSER/.ssh/authorized_keys"
-    chroot_exec chmod -R 600 "/home/$ADDUSER/.ssh"
-    chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
+    chroot_exec wget "https://raw.githubusercontent.com/FoxDenHome/sshkeys/main/$ADDUSER" -O "/home/$ADDUSER/.ssh/authorized_keys"
     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
+    chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
+    chroot_exec chmod 600 "/home/$ADDUSER/.ssh/authorized_keys"
 }
 
 add_user doridian

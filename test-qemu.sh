@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-./build.sh
+#./build.sh
 
 rm -f testimg/sdcard.img
 cp output/sdcard.img testimg/sdcard.img

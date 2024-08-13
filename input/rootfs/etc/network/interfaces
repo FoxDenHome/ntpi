@@ -3,7 +3,7 @@ iface lo inet loopback
 
 auto eth0
 iface eth0 inet static
-	address 10.1.1.2
+	address 10.1.1.123
 	netmask 255.255.0.0
 	gateway 10.1.0.1
 	dns-nameservers 10.1.0.53
@@ -11,25 +11,25 @@ iface eth0 inet static
 
 auto eth0.2
 iface eth0.2 inet static
-	address 10.2.1.2
+	address 10.2.1.123
 	netmask 255.255.0.0
 
 auto eth0.3
 iface eth0.3 inet static
-	address 10.3.1.2
+	address 10.3.1.123
 	netmask 255.255.0.0
 
 auto eth0.4
 iface eth0.4 inet static
-	address 10.4.1.2
+	address 10.4.1.123
 	netmask 255.255.0.0
 
 auto eth0.5
 iface eth0.5 inet static
-	address 10.5.1.2
+	address 10.5.1.123
 	netmask 255.255.0.0
 
 auto eth0.6
 iface eth0.6 inet static
-	address 10.6.1.2
+	address 10.6.1.123
 	netmask 255.255.0.0
