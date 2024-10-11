@@ -11,7 +11,7 @@ echo '@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> "$ROOTFS_P
 chroot_exec apk update
 chroot_exec apk upgrade
 chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-smbus py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat net-snmp zsh
-chroot_exec apk add openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc
+chroot_exec apk add zsh-vcs musl-nscd openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc
 chroot_exec apk add kanidm-openrc@testing kanidm-clients@testing kanidm-unixd-clients@testing kanidm-zsh-completion@testing oh-my-zsh@testing
 
 # Run compilation and inclusion steps for external code
@@ -26,6 +26,7 @@ chroot_exec rc-update add s6 default
 chroot_exec rc-update add sshd default
 chroot_exec rc-update add kanidm-unixd default
 chroot_exec rc-update add kanidm-unixd-tasks default
+chroot_exec rc-update add nscd default
 chroot_exec rc-update add hwclock
 
 # Configure kernel modules
@@ -100,6 +101,7 @@ chroot_exec ln -s /data/var/lib/kanidm-unixd /var/lib/
 chroot_exec ln -s /data/var/cache/kanidm-unixd /var/cache/
 
 chroot_exec ln -s /usr/lib/security/pam_kanidm.so /lib/security/pam_kanidm.so
+chroot_exec ln -s /bin/zsh /usr/bin/zsh
 
 chroot_exec sed -i 's~/etc/ssh/ssh_host_~/data/etc/ssh/ssh_host_~g' /etc/init.d/sshd
 
