@@ -13,4 +13,7 @@ depend() {
 
 start_pre() {
     mkdir -p /data/var/cache/kanidm-unixd /data/var/lib/kanidm-unixd /var/run/kanidm-unixd
+    chown -R kanidm-unixd:kanidm-unixd /data/var/cache/kanidm-unixd /data/var/lib/kanidm-unixd /var/run/kanidm-unixd
+    chmod 700 /data/var/cache/kanidm-unixd
+    chmod 755 /data/var/lib/kanidm-unixd /var/run/kanidm-unixd
 }
