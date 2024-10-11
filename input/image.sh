@@ -24,6 +24,8 @@ chroot_exec rc-update del ntpd default
 chroot_exec rc-update del ab_clock default
 chroot_exec rc-update add s6 default
 chroot_exec rc-update add sshd default
+chroot_exec rc-update add kanidm-unixd default
+chroot_exec rc-update add kanidm-unixd-tasks default
 chroot_exec rc-update add hwclock
 
 # Configure kernel modules
