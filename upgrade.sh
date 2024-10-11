@@ -3,7 +3,7 @@ set -e
 
 DEST="$1"
 
-sftp -b /dev/stdin -oPort=2222 "$DEST" <<EOF
+sftp -b /dev/stdin "$DEST" <<EOF
 put output/sdcard_update.img.gz /tmp/sdcard_update.img.gz
 put output/sdcard_update.img.gz.sha256 /tmp/sdcard_update.img.gz.sha256
 EOF
