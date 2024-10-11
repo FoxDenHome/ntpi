@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 # Configure boot process
 mkenvimage -s 0x4000 -o "$BOOTFS_PATH/uboot.env" "$INPUT_PATH/uboot.env"
