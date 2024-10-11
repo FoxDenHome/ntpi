@@ -29,8 +29,9 @@ chroot_exec rc-update add kanidm-unixd-tasks default
 chroot_exec rc-update add hwclock
 
 # Configure kernel modules
+LOAD_KERNEL_MODULES='8021q af_packet bridge dwc2 garp i2c-dev i2c-mux i2c-mux-pinctrl ipv6 llc pps-gpio pps-ldisc raspberrypi-hwmon roles rtc-pcf85063 stp ftdi_sio'
 echo -n > "$ROOTFS_PATH/etc/modules"
-for mod in ${DEFAULT_KERNEL_MODULES}
+for mod in ${LOAD_KERNEL_MODULES}
 do
     echo "$mod" >> "$ROOTFS_PATH/etc/modules"
 done
