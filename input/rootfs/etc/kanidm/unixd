@@ -44,7 +44,7 @@ default_shell = "/bin/ash"
 #
 # Default: /home/
 
-home_mount_prefix = "/data/home/"
+home_prefix = "/data/home/"
 
 
 # The attribute to use for the stable home directory path. Valid choices are
