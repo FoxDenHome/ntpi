@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 # Configure boot process
 mkenvimage -s 0x4000 -o "$BOOTFS_PATH/uboot.env" "$INPUT_PATH/uboot.env"
@@ -7,11 +7,12 @@ cat "$INPUT_PATH/usercfg.txt" > "$BOOTFS_PATH/usercfg.txt"
 echo 'include usercfg.txt' >> "$BOOTFS_PATH/config.txt"
 
 # Install packages
-echo "@testing=http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> "$ROOTFS_PATH/etc/apk/repositories"
+echo '@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> "$ROOTFS_PATH/etc/apk/repositories"
 chroot_exec apk update
 chroot_exec apk upgrade
-chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-smbus py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat net-snmp oh-my-zsh zsh
-chroot_exec apk add kanidm-openrc@testing kanidm-clients@testing kanidm-unixd-clients@testing kanidm-zsh-completion@testing
+chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget sudo tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-smbus py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat net-snmp zsh
+chroot_exec apk add openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc
+chroot_exec apk add kanidm-openrc@testing kanidm-clients@testing kanidm-unixd-clients@testing kanidm-zsh-completion@testing oh-my-zsh@testing
 
 # Run compilation and inclusion steps for external code
 "$INPUT_PATH/download.sh"
@@ -22,6 +23,7 @@ chroot_exec rc-update del rngd sysinit
 chroot_exec rc-update del ntpd default
 chroot_exec rc-update del ab_clock default
 chroot_exec rc-update add s6 default
+chroot_exec rc-update add sshd default
 chroot_exec rc-update add hwclock
 
 # Configure kernel modules
@@ -90,14 +92,11 @@ add_user() {
     ADDUSER="$1"
     ADDUSER="$1"
 
-    chroot_exec adduser -D "$ADDUSER"
+    chroot_exec adduser -D "$ADDUSER" -s /bin/zsh
     chroot_exec adduser "$ADDUSER" breakglass
 
     chroot_exec rm -rf "/home/$ADDUSER"
-
-    chroot_exec usermod -s /bin/zsh "$ADDUSER"
     chroot_exec cp -rv /etc/skel/. "/home/$ADDUSER"
-
     chroot_exec mkdir -p "/home/$ADDUSER/.ssh"
     cp -vf "$INPUT_PATH/keys/$ADDUSER" "$ROOTFS_PATH/home/$ADDUSER/.ssh/authorized_keys"
     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
