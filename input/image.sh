@@ -82,7 +82,7 @@ sed "s/__IMAGE_COMMIT__/$IMAGE_COMMIT/" -i "$ROOTFS_PATH/etc/motd"
 sed "s/__IMAGE_DATE__/$IMAGE_DATE/" -i "$ROOTFS_PATH/etc/motd"
 
 # Add users
-chroot_exec addgroup sudo
+chroot_exec addgroup breakglass
 
 add_user() {
     ADDUSER_RNAME="$1"
@@ -92,7 +92,7 @@ add_user() {
     fi
 
     chroot_exec adduser -D "$ADDUSER"
-    chroot_exec adduser "$ADDUSER" sudo
+    chroot_exec adduser "$ADDUSER" breakglass
 
     chroot_exec rm -rf "/home/$ADDUSER"
     chroot_exec mkdir -p "/home/$ADDUSER/.ssh"
