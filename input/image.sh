@@ -85,22 +85,19 @@ sed "s/__IMAGE_DATE__/$IMAGE_DATE/" -i "$ROOTFS_PATH/etc/motd"
 chroot_exec addgroup breakglass
 
 add_user() {
-    ADDUSER_RNAME="$1"
-    ADDUSER="$2"
-    if [ -z "$ADDUSER" ]; then
-        ADDUSER="${ADDUSER_RNAME}-bg"
-    fi
+    ADDUSER="$1"
+    ADDUSER="$1"
 
     chroot_exec adduser -D "$ADDUSER"
     chroot_exec adduser "$ADDUSER" breakglass
 
     chroot_exec rm -rf "/home/$ADDUSER"
     chroot_exec mkdir -p "/home/$ADDUSER/.ssh"
-    chroot_exec wget "https://raw.githubusercontent.com/FoxDenHome/sshkeys/main/$ADDUSER" -O "/home/$ADDUSER/.ssh/authorized_keys"
+    chroot_exec cp -vf "$INPUT_PATH/keys/$ADDUSER" "/home/$ADDUSER/.ssh/authorized_keys"
     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
     chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
     chroot_exec chmod 600 "/home/$ADDUSER/.ssh/authorized_keys"
 }
 
-add_user doridian
-add_user wizzy
+add_user doridian-bg
+add_user wizzy-bg
