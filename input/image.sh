@@ -85,7 +85,12 @@ sed "s/__IMAGE_DATE__/$IMAGE_DATE/" -i "$ROOTFS_PATH/etc/motd"
 chroot_exec addgroup sudo
 
 add_user() {
-    ADDUSER="$1"
+    ADDUSER_RNAME="$1"
+    ADDUSER="$2"
+    if [ -z "$ADDUSER" ]; then
+        ADDUSER="${ADDUSER_RNAME}-bg"
+    fi
+
     chroot_exec adduser -D "$ADDUSER"
     chroot_exec adduser "$ADDUSER" sudo
 
