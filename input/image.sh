@@ -93,7 +93,7 @@ add_user() {
 
     chroot_exec rm -rf "/home/$ADDUSER"
     chroot_exec mkdir -p "/home/$ADDUSER/.ssh"
-    chroot_exec cp -vf "$INPUT_PATH/keys/$ADDUSER" "/home/$ADDUSER/.ssh/authorized_keys"
+    cp -vf "$INPUT_PATH/keys/$ADDUSER" "$ROOTFS_PATH/home/$ADDUSER/.ssh/authorized_keys"
     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
     chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
     chroot_exec chmod 600 "/home/$ADDUSER/.ssh/authorized_keys"
