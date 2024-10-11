@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 
 rm -rf output && mkdir -p output
 
-export DEFAULT_KERNEL_MODULES='8021q af_packet bridge dwc2 garp i2c-dev i2c-mux i2c-mux-pinctrl ipv6 llc pps-gpio pps-ldisc raspberrypi-hwmon roles rtc-pcf85063 stp ftdi_sio'
+export DEFAULT_KERNEL_MODULES='8021q garp af_packet bridge dwc2 garp i2c-dev i2c-mux i2c-mux-pinctrl ipv6 llc pps-gpio pps-ldisc raspberrypi-hwmon roles rtc-pcf85063 stp ftdi_sio'
 export CMDLINE='console=tty1 root=/dev/root rootfstype=ext4 fsck.repair=yes ro rootwait'
 
 git rev-parse HEAD > input/rootfs/etc/image_commit

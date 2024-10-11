@@ -95,6 +95,8 @@ chroot_exec ln -s /data/etc/ssh/ssh_host_ecdsa_key.pub /etc/ssh/ssh_host_ecdsa_k
 chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key /etc/ssh/ssh_host_ed25519_key
 chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key.pub /etc/ssh/ssh_host_ed25519_key.pub
 
+chroot_exec sed -i 's~/etc/ssh/ssh_host_~/data/etc/ssh/ssh_host_~g' /etc/init.d/sshd
+
 # Add users
 chroot_exec addgroup breakglass
 
@@ -102,11 +104,10 @@ add_user() {
     ADDUSER="$1"
     ADDUSER="$1"
 
-    chroot_exec adduser -D "$ADDUSER" -s /bin/zsh
+    chroot_exec adduser -D "$ADDUSER" -s /bin/ash
     chroot_exec adduser "$ADDUSER" breakglass
 
     chroot_exec rm -rf "/home/$ADDUSER"
-    chroot_exec cp -rv /etc/skel/. "/home/$ADDUSER"
     chroot_exec mkdir -p "/home/$ADDUSER/.ssh"
     cp -vf "$INPUT_PATH/keys/$ADDUSER" "$ROOTFS_PATH/home/$ADDUSER/.ssh/authorized_keys"
     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
