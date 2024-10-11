@@ -17,4 +17,4 @@ qemu-system-aarch64 -M raspi3b \
     -smp 4 \
     -serial stdio \
     -device usb-net,netdev=net0 \
-    -netdev user,id=net0,hostfwd=tcp::5555-:2222
+    -netdev user,id=net0,hostfwd=tcp::5555-:22

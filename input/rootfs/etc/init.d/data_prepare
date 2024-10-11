@@ -16,13 +16,11 @@ start()
     mkdir -p /data/chrony && chown -R chrony:chrony /data/chrony
     mkdir -p /tmp/node-exporter && chmod 1777 /tmp/node-exporter
 
-    mkdir -p /data/etc
+    mkdir -p /data/etc /data/home /data/etc/ssh
     if [ ! -f /data/etc/shadow ]
     then
         cp -p /etc/shadow.alpine-builder /data/etc/shadow
     fi
-
-    mkdir -p /data/home
 
     eend 0
 }

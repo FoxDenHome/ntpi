@@ -87,6 +87,14 @@ IMAGE_DATE="$(cat "$ROOTFS_PATH/etc/image_date" | tr -d "\r\n\t")"
 sed "s/__IMAGE_COMMIT__/$IMAGE_COMMIT/" -i "$ROOTFS_PATH/etc/motd"
 sed "s/__IMAGE_DATE__/$IMAGE_DATE/" -i "$ROOTFS_PATH/etc/motd"
 
+# Ensure sshd can generate host keys
+chroot_exec ln -s /data/etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key
+chroot_exec ln -s /data/etc/ssh/ssh_host_rsa_key.pub /etc/ssh/ssh_host_rsa_key.pub
+chroot_exec ln -s /data/etc/ssh/ssh_host_ecdsa_key /etc/ssh/ssh_host_ecdsa_key
+chroot_exec ln -s /data/etc/ssh/ssh_host_ecdsa_key.pub /etc/ssh/ssh_host_ecdsa_key.pub
+chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key /etc/ssh/ssh_host_ed25519_key
+chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key.pub /etc/ssh/ssh_host_ed25519_key.pub
+
 # Add users
 chroot_exec addgroup breakglass
 
