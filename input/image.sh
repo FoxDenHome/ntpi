@@ -96,6 +96,9 @@ chroot_exec ln -s /data/etc/ssh/ssh_host_ecdsa_key.pub /etc/ssh/ssh_host_ecdsa_k
 chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key /etc/ssh/ssh_host_ed25519_key
 chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key.pub /etc/ssh/ssh_host_ed25519_key.pub
 
+chroot_exec ln -s /data/var/lib/kanidm-unixd /var/lib/
+chroot_exec ln -s /data/var/cache/kanidm-unixd /var/cache/
+
 chroot_exec sed -i 's~/etc/ssh/ssh_host_~/data/etc/ssh/ssh_host_~g' /etc/init.d/sshd
 
 # Add users
