@@ -78,7 +78,7 @@
 ##
 root ALL=(ALL) ALL
 
-%breakglass ALL=(ALL) NOPASSWD: ALL
+# %breakglass ALL=(ALL) NOPASSWD: ALL
 
 %superadmins ALL=(ALL) ALL
 

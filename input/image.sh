@@ -21,6 +21,7 @@ chroot_exec apk add kanidm-openrc@testing kanidm-clients@testing kanidm-unixd-cl
 # Configure services
 chroot_exec rc-update del rngd sysinit
 chroot_exec rc-update del ntpd default
+chroot_exec rc-update del dropbear default
 chroot_exec rc-update del ab_clock default
 chroot_exec rc-update add s6 default
 chroot_exec rc-update add sshd default
@@ -116,22 +117,22 @@ chroot_exec ln -s /bin/zsh /usr/bin/zsh
 chroot_exec sed -i 's~/etc/ssh/ssh_host_~/data/etc/ssh/ssh_host_~g' /etc/init.d/sshd
 
 # Add users
-chroot_exec addgroup breakglass
+# chroot_exec addgroup breakglass
 
-add_user() {
-    ADDUSER="$1"
-    ADDUSER="$1"
+# add_user() {
+#     ADDUSER="$1"
+#     ADDUSER="$1"
 
-    chroot_exec adduser -D "$ADDUSER" -s /bin/zsh
-    chroot_exec adduser "$ADDUSER" breakglass
+#     chroot_exec adduser -D "$ADDUSER" -s /bin/zsh
+#     chroot_exec adduser "$ADDUSER" breakglass
 
-    chroot_exec mkdir -p "/home/$ADDUSER/.ssh" "/home/$ADDUSER/.cache"
-    cp -vf "$INPUT_PATH/keys/$ADDUSER" "$ROOTFS_PATH/home/$ADDUSER/.ssh/authorized_keys"
-    chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
-    chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
-    chroot_exec chmod 600 "/home/$ADDUSER/.ssh/authorized_keys"
-    add_tmpfs "/home/$ADDUSER/.cache" "uid=$ADDUSER,gid=$ADDUSER,mode=700,size=8m,nosuid,nodev"
-}
+#     chroot_exec mkdir -p "/home/$ADDUSER/.ssh" "/home/$ADDUSER/.cache"
+#     cp -vf "$INPUT_PATH/keys/$ADDUSER" "$ROOTFS_PATH/home/$ADDUSER/.ssh/authorized_keys"
+#     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
+#     chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
+#     chroot_exec chmod 600 "/home/$ADDUSER/.ssh/authorized_keys"
+#     add_tmpfs "/home/$ADDUSER/.cache" "uid=$ADDUSER,gid=$ADDUSER,mode=700,size=8m,nosuid,nodev"
+# }
 
-add_user doridian-bg
-add_user wizzy-bg
+# add_user doridian-bg
+# add_user wizzy-bg
