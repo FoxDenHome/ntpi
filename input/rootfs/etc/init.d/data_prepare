@@ -29,5 +29,7 @@ start()
         cp -rf /etc/skel/. /data/root/
     fi
 
+    mount -a
+
     eend 0
 }
