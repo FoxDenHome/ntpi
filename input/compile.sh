@@ -21,8 +21,3 @@ echo "#######################################"
 echo "COMPILING UTILITIES"
 echo "#######################################"
 gcc "$INPUT_PATH/src/testptp.c" $EXTRA_CFLAGS -o "$ROOTFS_PATH/usr/sbin/testptp"
-
-git clone https://github.com/Doridian/libnss_igshim /tmp/libnss_igshim
-cd /tmp/libnss_igshim
-make
-cp -fv *.so* "$ROOTFS_PATH/usr/lib/libnss_igshim.so"
