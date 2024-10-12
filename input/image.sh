@@ -69,7 +69,6 @@ revert_data_ln '/etc/network/interfaces'
 sed 's~/data/etc/~/tmp/~g' -i "$ROOTFS_PATH/etc/udhcpc/udhcpc.conf"
 revert_data_ln '/etc/localtime'
 revert_data_ln '/etc/timezone'
-revert_data_override '/etc/conf.d/dropbear'
 
 # Copy our rootfs additions
 cp -d -r "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
@@ -81,10 +80,7 @@ chown 0:0 "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 chmod 700 "$ROOTFS_PATH/root"
 mkdir -p "$ROOTFS_PATH/root"
 
-cp -vrf "$ROOTFS_PATH/etc/skel/." "$ROOTFS_PATH/root/"
-
-mkdir -p "$ROOTFS_PATH/root/.cache"
-add_tmpfs '/root/.cache' 'uid=0,gid=0,mode=700,size=8m,nosuid,nodev'
+add_tmpfs '/root' 'uid=0,gid=0,mode=700,size=8m,nosuid,nodev'
 
 while read lineraw; do
     line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
@@ -115,24 +111,3 @@ chroot_exec ln -s /usr/lib/security/pam_kanidm.so /lib/security/pam_kanidm.so
 chroot_exec ln -s /bin/zsh /usr/bin/zsh
 
 chroot_exec sed -i 's~/etc/ssh/ssh_host_~/data/etc/ssh/ssh_host_~g' /etc/init.d/sshd
-
-# Add users
-# chroot_exec addgroup breakglass
-
-# add_user() {
-#     ADDUSER="$1"
-#     ADDUSER="$1"
-
-#     chroot_exec adduser -D "$ADDUSER" -s /bin/zsh
-#     chroot_exec adduser "$ADDUSER" breakglass
-
-#     chroot_exec mkdir -p "/home/$ADDUSER/.ssh" "/home/$ADDUSER/.cache"
-#     cp -vf "$INPUT_PATH/keys/$ADDUSER" "$ROOTFS_PATH/home/$ADDUSER/.ssh/authorized_keys"
-#     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
-#     chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
-#     chroot_exec chmod 600 "/home/$ADDUSER/.ssh/authorized_keys"
-#     add_tmpfs "/home/$ADDUSER/.cache" "uid=$ADDUSER,gid=$ADDUSER,mode=700,size=8m,nosuid,nodev"
-# }
-
-# add_user doridian-bg
-# add_user wizzy-bg
