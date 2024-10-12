@@ -49,6 +49,8 @@ add_tmpfs() {
 }
 add_tmpfs '/var/log'
 
+sed -i 's~/data/root~# /data/root~g' "$ROOTFS_PATH/etc/fstab"
+
 # Undo things the image creator did we don't want
 revert_data_ln() {
     LN_PATH="$1"
