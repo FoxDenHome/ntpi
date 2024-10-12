@@ -44,8 +44,9 @@ echo 'END OF MODULE LIST'
 echo >> "$ROOTFS_PATH/etc/fstab"
 add_tmpfs() {
     TMP_PATH="$1"
+    OPTIONS="${2-defaults}"
     mkdir -p "$ROOTFS_PATH/$TMP_PATH"
-    echo "tmpfs $TMP_PATH tmpfs defaults 0 0" >> "$ROOTFS_PATH/etc/fstab"
+    echo "tmpfs $TMP_PATH tmpfs $OPTIONS 0 0" >> "$ROOTFS_PATH/etc/fstab"
 }
 add_tmpfs '/var/log'
 
@@ -77,8 +78,12 @@ rm -rf "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 mkdir -p "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 chown 0:0 "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 chmod 700 "$ROOTFS_PATH/root"
+mkdir -p "$ROOTFS_PATH/root"
 
 cp -vrf "$ROOTFS_PATH/etc/skel/." "$ROOTFS_PATH/root/"
+
+mkdir -p "$ROOTFS_PATH/root/.cache"
+add_tmpfs '/root/.cache' 'uid=0,gid=0,mode=700'
 
 while read lineraw; do
     line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
@@ -117,15 +122,15 @@ add_user() {
     ADDUSER="$1"
     ADDUSER="$1"
 
-    chroot_exec adduser -D "$ADDUSER" -s /bin/ash
+    chroot_exec adduser -D "$ADDUSER" -s /bin/zsh
     chroot_exec adduser "$ADDUSER" breakglass
 
-    chroot_exec rm -rf "/home/$ADDUSER"
-    chroot_exec mkdir -p "/home/$ADDUSER/.ssh"
+    chroot_exec mkdir -p "/home/$ADDUSER/.ssh" "/home/$ADDUSER/.cache"
     cp -vf "$INPUT_PATH/keys/$ADDUSER" "$ROOTFS_PATH/home/$ADDUSER/.ssh/authorized_keys"
     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
     chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
     chroot_exec chmod 600 "/home/$ADDUSER/.ssh/authorized_keys"
+    add_tmpfs "/home/$ADDUSER/.cache" "uid=$ADDUSER,gid=$ADDUSER,mode=700"
 }
 
 add_user doridian-bg
