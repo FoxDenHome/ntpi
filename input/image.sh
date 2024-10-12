@@ -48,7 +48,7 @@ add_tmpfs() {
     mkdir -p "$ROOTFS_PATH/$TMP_PATH"
     echo "tmpfs $TMP_PATH tmpfs $OPTIONS 0 0" >> "$ROOTFS_PATH/etc/fstab"
 }
-add_tmpfs '/var/log' 'size=64m'
+add_tmpfs '/var/log' 'noexec,nosuid,nodev,size=64m'
 
 sed -i 's~/data/root~# /data/root~g' "$ROOTFS_PATH/etc/fstab"
 
@@ -83,7 +83,7 @@ mkdir -p "$ROOTFS_PATH/root"
 cp -vrf "$ROOTFS_PATH/etc/skel/." "$ROOTFS_PATH/root/"
 
 mkdir -p "$ROOTFS_PATH/root/.cache"
-add_tmpfs '/root/.cache' 'uid=0,gid=0,mode=700,size=8m'
+add_tmpfs '/root/.cache' 'uid=0,gid=0,mode=700,size=8m,nosuid,nodev'
 
 while read lineraw; do
     line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
@@ -130,7 +130,7 @@ add_user() {
     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
     chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
     chroot_exec chmod 600 "/home/$ADDUSER/.ssh/authorized_keys"
-    add_tmpfs "/home/$ADDUSER/.cache" "uid=$ADDUSER,gid=$ADDUSER,mode=700,size=8m"
+    add_tmpfs "/home/$ADDUSER/.cache" "uid=$ADDUSER,gid=$ADDUSER,mode=700,size=8m,nosuid,nodev"
 }
 
 add_user doridian-bg
