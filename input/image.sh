@@ -49,7 +49,7 @@ add_tmpfs() {
     mkdir -p "$ROOTFS_PATH/$TMP_PATH"
     echo "tmpfs $TMP_PATH tmpfs $OPTIONS 0 0" >> "$ROOTFS_PATH/etc/fstab"
 }
-add_tmpfs '/var/log' 'noexec,nosuid,nodev,size=64m'
+add_tmpfs '/var/log' 'defaults,noexec,nosuid,nodev,size=64m'
 
 # Undo things the image creator did we don't want
 revert_data_ln() {
