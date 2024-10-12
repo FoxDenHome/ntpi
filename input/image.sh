@@ -51,6 +51,8 @@ add_tmpfs() {
 }
 add_tmpfs '/var/log' 'defaults,noexec,nosuid,nodev,size=64m'
 
+sed -i 's~/data/etc/dropbear~# /data/etc/dropbear~g' "$ROOTFS_PATH/etc/fstab"
+
 # Undo things the image creator did we don't want
 revert_data_ln() {
     LN_PATH="$1"
