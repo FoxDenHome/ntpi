@@ -48,7 +48,7 @@ add_tmpfs() {
     mkdir -p "$ROOTFS_PATH/$TMP_PATH"
     echo "tmpfs $TMP_PATH tmpfs $OPTIONS 0 0" >> "$ROOTFS_PATH/etc/fstab"
 }
-add_tmpfs '/var/log'
+add_tmpfs '/var/log' 'size=64m'
 
 sed -i 's~/data/root~# /data/root~g' "$ROOTFS_PATH/etc/fstab"
 
