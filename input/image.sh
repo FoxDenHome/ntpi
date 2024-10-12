@@ -83,7 +83,7 @@ mkdir -p "$ROOTFS_PATH/root"
 cp -vrf "$ROOTFS_PATH/etc/skel/." "$ROOTFS_PATH/root/"
 
 mkdir -p "$ROOTFS_PATH/root/.cache"
-add_tmpfs '/root/.cache' 'uid=0,gid=0,mode=700'
+add_tmpfs '/root/.cache' 'uid=0,gid=0,mode=700,size=8m'
 
 while read lineraw; do
     line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
@@ -130,7 +130,7 @@ add_user() {
     chroot_exec chown -R "$ADDUSER:$ADDUSER" "/home/$ADDUSER"
     chroot_exec chmod 700 "/home/$ADDUSER" "/home/$ADDUSER/.ssh"
     chroot_exec chmod 600 "/home/$ADDUSER/.ssh/authorized_keys"
-    add_tmpfs "/home/$ADDUSER/.cache" "uid=$ADDUSER,gid=$ADDUSER,mode=700"
+    add_tmpfs "/home/$ADDUSER/.cache" "uid=$ADDUSER,gid=$ADDUSER,mode=700,size=8m"
 }
 
 add_user doridian-bg
