@@ -13,5 +13,5 @@ date > input/rootfs/etc/image_date
 git ls-files input/rootfs/ --stage --full-name > input/rootfs-ls-files
 
 #sudo docker pull --platform=linux/arm64 ghcr.io/raspi-alpine/builder:latest
-sudo docker buildx build --platform=linux/arm64 -t customized_alpine_builder builderimage --load
-sudo docker run --platform=linux/arm64 --rm -it -e CACHE_PATH=/cache -e DEFAULT_HOSTNAME=ntpi -e ARCH=aarch64 -e DEFAULT_TIMEZONE=America/Los_Angeles -e CMDLINE -e DEFAULT_KERNEL_MODULES -e SIZE_ROOT_PART=1000M -e SIZE_ROOT_FS=0 -v "$PWD/cache:/cache" -v "$PWD/input:/input" -v "$PWD/output:/output" customized_alpine_builder
+docker buildx build --platform=linux/arm64 -t customized_alpine_builder builderimage --load
+docker run --platform=linux/arm64 --rm -it -e CACHE_PATH=/cache -e DEFAULT_HOSTNAME=ntpi -e ARCH=aarch64 -e DEFAULT_TIMEZONE=America/Los_Angeles -e CMDLINE -e DEFAULT_KERNEL_MODULES -e SIZE_ROOT_PART=1000M -e SIZE_ROOT_FS=0 -v "$PWD/cache:/cache" -v "$PWD/input:/input" -v "$PWD/output:/output" customized_alpine_builder

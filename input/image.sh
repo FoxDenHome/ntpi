@@ -67,13 +67,16 @@ revert_data_ln '/etc/localtime'
 revert_data_ln '/etc/timezone'
 revert_data_override '/etc/conf.d/dropbear'
 
+# Copy our rootfs additions
+cp -d -r "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
+
+# Modify rootfs core things
 rm -rf "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 mkdir -p "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 chown 0:0 "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 chmod 700 "$ROOTFS_PATH/root"
 
-# Copy our rootfs additions
-cp -d -r "$INPUT_PATH/rootfs/"* "$ROOTFS_PATH"
+cp -vrf "$ROOTFS_PATH/etc/skel/." "$ROOTFS_PATH/root/"
 
 while read lineraw; do
     line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
