@@ -22,7 +22,12 @@ start()
         cp -p /etc/shadow.alpine-builder /data/etc/shadow
     fi
 
-    cp -rf /etc/skel/. /root/
+    mkdir -p /data/root
+    chmod 700 /data/root
+    if [ ! -f /data/root/.zshrc ]
+    then
+        cp -rf /etc/skel/. /data/root/
+    fi
 
     eend 0
 }

@@ -51,8 +51,6 @@ add_tmpfs() {
 }
 add_tmpfs '/var/log' 'noexec,nosuid,nodev,size=64m'
 
-sed -i 's~/data/root~# /data/root~g' "$ROOTFS_PATH/etc/fstab"
-
 # Undo things the image creator did we don't want
 revert_data_ln() {
     LN_PATH="$1"
@@ -79,8 +77,6 @@ mkdir -p "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 chown 0:0 "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 chmod 700 "$ROOTFS_PATH/root"
 mkdir -p "$ROOTFS_PATH/root"
-
-add_tmpfs '/root' 'uid=0,gid=0,mode=700,size=8m,nosuid,nodev'
 
 while read lineraw; do
     line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
