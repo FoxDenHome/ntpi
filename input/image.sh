@@ -14,8 +14,9 @@ echo '@libnss_igshim https://github.com/Doridian/libnss_igshim/releases/download
 chroot_exec apk update
 chroot_exec apk upgrade
 chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-smbus py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat net-snmp zsh openssl
-chroot_exec apk add zsh-vcs musl-nscd openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc netdata
+chroot_exec apk add zsh-vcs musl-nscd openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc
 chroot_exec apk add kanidm-openrc@testing kanidm-clients@testing kanidm-unixd-clients@testing kanidm-zsh-completion@testing oh-my-zsh@community sudo-ldap@testing
+chroot_exec apk add netdata netdata-go-plugins
 chroot_exec apk add libnss_igshim@libnss_igshim
 
 # Run compilation and inclusion steps for external code
