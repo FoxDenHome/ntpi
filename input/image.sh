@@ -13,8 +13,8 @@ echo '@community https://dl-cdn.alpinelinux.org/alpine/edge/community' >> "$ROOT
 echo '@libnss_igshim https://github.com/Doridian/libnss_igshim/releases/download' >> "$ROOTFS_PATH/etc/apk/repositories"
 chroot_exec apk update
 chroot_exec apk upgrade
-chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-smbus py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat net-snmp zsh
-chroot_exec apk add zsh-vcs musl-nscd openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc
+chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils chrony htop curl screen prometheus-node-exporter gpsd gpsd-clients bridge wget tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-smbus py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat net-snmp zsh openssl
+chroot_exec apk add zsh-vcs musl-nscd openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc netdata
 chroot_exec apk add kanidm-openrc@testing kanidm-clients@testing kanidm-unixd-clients@testing kanidm-zsh-completion@testing oh-my-zsh@community sudo-ldap@testing
 chroot_exec apk add libnss_igshim@libnss_igshim
 
@@ -108,6 +108,10 @@ chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key.pub /etc/ssh/ssh_host_ed255
 
 chroot_exec ln -s /data/var/lib/kanidm-unixd /var/lib/
 chroot_exec ln -s /data/var/cache/kanidm-unixd /var/cache/
+
+chroot_exec rm -rf /var/lib/netdata /var/cache/netdata
+chroot_exec ln -s /data/var/lib/netdata /var/lib/
+chroot_exec ln -s /data/var/cache/netdata /var/cache/
 
 chroot_exec ln -s /usr/lib/security/pam_kanidm.so /lib/security/pam_kanidm.so
 chroot_exec ln -s /bin/zsh /usr/bin/zsh

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+mkdir -p /data/var/cache/netdata /data/var/lib/netdata /var/run/netdata
+chown -R netdata:netdata /data/var/cache/netdata /data/var/lib/netdata /var/run/netdata
+
+exec /usr/sbin/netdata -D
