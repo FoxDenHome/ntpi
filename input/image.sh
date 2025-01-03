@@ -19,7 +19,7 @@ chroot_exec apk add kanidm-openrc@testing kanidm-clients@testing kanidm-unixd-cl
 chroot_exec apk add libnss_igshim@libnss_igshim
 
 chroot_exec wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh
-chroot_exec sh /tmp/netdata-kickstart.sh --non-interactive
+chroot_exec sh /tmp/netdata-kickstart.sh --non-interactive --stable-channel --disable-telemetry
 chroot_exec rm -f /tmp/netdata-kickstart.sh
 
 # Run compilation and inclusion steps for external code
