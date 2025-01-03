@@ -29,7 +29,6 @@ chroot_exec rm -f /tmp/netdata-kickstart.sh
 # Configure services
 chroot_exec rc-update del rngd sysinit
 chroot_exec rc-update del ntpd default
-chroot_exec rc-update del netdata default
 chroot_exec rc-update del dropbear default
 chroot_exec rc-update del ab_clock default
 chroot_exec rc-update add s6 default
@@ -38,6 +37,9 @@ chroot_exec rc-update add kanidm-unixd default
 chroot_exec rc-update add kanidm-unixd-tasks default
 chroot_exec rc-update add nscd default
 chroot_exec rc-update add hwclock
+
+chroot_exec rc-update del netdata default
+chroot_exec rm -f /etc/periodic/daily/netdata-updater
 
 # Configure kernel modules
 LOAD_KERNEL_MODULES='8021q af_packet bridge dwc2 garp i2c-dev i2c-mux i2c-mux-pinctrl ipv6 llc pps-gpio pps-ldisc raspberrypi-hwmon roles rtc-pcf85063 stp ftdi_sio'
