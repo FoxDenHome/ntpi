@@ -10,7 +10,7 @@ from time import sleep
 from cffi import FFI
 
 LEAP_FILE = "/data/leap-seconds.list"
-LEAP_FILE_URL = "https://www.ietf.org/timezones/data/leap-seconds.list"
+LEAP_FILE_URL = "https://data.iana.org/time-zones/data/leap-seconds.list"
 NTP_UTC_OFFSET = 2208988800
 LEAP_FILE_RENEWAL_TIMEOUT = timedelta(days=60)
 
