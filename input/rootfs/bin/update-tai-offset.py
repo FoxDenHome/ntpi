@@ -18,7 +18,7 @@ WAIT_TIME_CONFIGURATE = 15 * 60
 
 
 def ntp2datetime(time):
-    return datetime.utcfromtimestamp(time - NTP_UTC_OFFSET)
+    return datetime.fromtimestamp(time - NTP_UTC_OFFSET, datetime.timezone.utc)
 
 
 class LeapFile():
