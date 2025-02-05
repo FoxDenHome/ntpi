@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from re import split
 from traceback import print_exc
 from requests import get
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from subprocess import check_call
 from sys import stderr
 from time import sleep
@@ -18,7 +18,7 @@ WAIT_TIME_CONFIGURATE = 15 * 60
 
 
 def ntp2datetime(time):
-    return datetime.fromtimestamp(time - NTP_UTC_OFFSET, datetime.timezone.utc)
+    return datetime.fromtimestamp(time - NTP_UTC_OFFSET, timezone.utc)
 
 
 class LeapFile():
@@ -45,7 +45,7 @@ class LeapFile():
 
     def current_utc_tai_offset(self):
         self.load()
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         for time in self.times_sorted:
             if time <= now:
                 return self.time_map[time]
@@ -57,7 +57,7 @@ class LeapFile():
         except FileNotFoundError:
             pass
 
-        min_expiry = datetime.utcnow() + self.renewal_timeout
+        min_expiry = datetime.now(timezone.utc) + self.renewal_timeout
         if (not force) and self.expiry is not None and (self.expiry >= min_expiry):
             return False
 
@@ -193,7 +193,7 @@ def main():
             print_exc()
             stderr.flush()
 
-    #add_configurator(PTP4LConfigurator)
+    add_configurator(PTP4LConfigurator)
     add_configurator(KernelConfigurator)
 
     did_update = True
