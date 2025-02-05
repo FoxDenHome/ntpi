@@ -15,7 +15,7 @@ start()
     mount -a
 
     mkdir -p /data/chrony && chown -R chrony:chrony /data/chrony
-    chmod 1777 /tmp/node-exporter
+    mkdir -p /tmp/node-exporter && chmod 1777 /tmp/node-exporter
 
     mkdir -p /data/etc /data/home /data/etc/ssh
     if [ ! -f /data/etc/shadow ]
