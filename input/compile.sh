@@ -35,6 +35,6 @@ doabuild
 cd /tmp
 
 cp -v ~/packages/main/aarch64/*.apk "$ROOTFS_PATH/tmp/"
-chroot_exec /bin/sh -c 'rm -fv /tmp/*openrc*.apk /tmp/*doc*.apk /tmp/*dev*.apk'
+chroot_exec /bin/sh -c 'rm -fv /tmp/*openrc*.apk /tmp/*doc*.apk /tmp/*dev*.apk /tmp/*dbg*.apk'
 chroot_exec /bin/sh -c 'apk add --allow-untrusted /tmp/*.apk'
 chroot_exec /bin/sh -c 'rm -fv /tmp/*.apk'
