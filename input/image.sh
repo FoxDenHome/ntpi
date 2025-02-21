@@ -23,6 +23,7 @@ chroot_exec sh /tmp/netdata-kickstart.sh --non-interactive --stable-channel --di
 chroot_exec rm -f /tmp/netdata-kickstart.sh
 
 # Run compilation and inclusion steps for external code
+SUDO='' abuild-keygen --append --install -n
 "$INPUT_PATH/download.sh"
 "$INPUT_PATH/compile.sh"
 
