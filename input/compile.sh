@@ -8,7 +8,7 @@ echo "#######################################"
 echo "COMPILING CHRONY + GPSD"
 echo "#######################################"
 
-git clone --depth 1 https://gitlab.alpinelinux.org/alpine/aports.git /tmp/aports
+git clone --depth 1 --branch 3.21-stable https://gitlab.alpinelinux.org/alpine/aports.git /tmp/aports
 cd /tmp/aports
 patch -p1 -i "$INPUT_PATH/aports.patch"
 
