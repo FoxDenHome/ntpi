@@ -13,20 +13,20 @@ echo '@edge-community https://dl-cdn.alpinelinux.org/alpine/edge/community' >> "
 echo '@libnss_igshim https://github.com/Doridian/libnss_igshim/releases/download' >> "$ROOTFS_PATH/etc/apk/repositories"
 chroot_exec apk update
 chroot_exec apk upgrade
-chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils htop curl screen prometheus-node-exporter bridge wget tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-smbus py3-pyserial py3-gpsd py3-requests raspberrypi libc6-compat net-snmp zsh openssl pps-tools pps-tools-dev chrony gpsd gpsd-clients
+chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils htop curl screen prometheus-node-exporter bridge wget tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-smbus py3-pyserial py3-requests raspberrypi libc6-compat net-snmp zsh openssl pps-tools pps-tools-dev
 chroot_exec apk add zsh-vcs musl-nscd openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc
 chroot_exec apk add kanidm-openrc@testing kanidm-clients@testing kanidm-unixd-clients@testing kanidm-zsh-completion@testing oh-my-zsh@edge-community sudo-ldap@testing
 chroot_exec apk add libnss_igshim@libnss_igshim
-
-chroot_exec wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh
-chroot_exec sh /tmp/netdata-kickstart.sh --non-interactive --stable-channel --disable-telemetry
-chroot_exec rm -f /tmp/netdata-kickstart.sh
 
 # Run compilation and inclusion steps for external code
 SUDO='' abuild-keygen --append --install -n
 apk update
 "$INPUT_PATH/download.sh"
 "$INPUT_PATH/compile.sh"
+
+chroot_exec wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh
+chroot_exec sh /tmp/netdata-kickstart.sh --non-interactive --stable-channel --disable-telemetry
+chroot_exec rm -f /tmp/netdata-kickstart.sh
 
 # Configure services
 chroot_exec rc-update del rngd sysinit

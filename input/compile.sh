@@ -12,12 +12,19 @@ git clone --depth 1 --branch 3.21-stable https://gitlab.alpinelinux.org/alpine/a
 cd /tmp/aports
 patch -p1 -i "$INPUT_PATH/aports.patch"
 
+doabuild() {
+    abuild -r -F validate builddeps clean fetch unpack prepare mkusers build rootpkg
+}
+
 cd /tmp/aports/main/chrony
-abuild -r -F
+doabuild
 cd /tmp/aports/main/gpsd
-abuild -r -F
+doabuild
 cd /tmp
 rm -rf /tmp/aports
+
+mv ~/packages/main/aarch64/*.apk "$ROOTFS_PATH/tmp/"
+chroot_exec apk add --allow-untrusted /tmp/*.apk
 
 echo "#######################################"
 echo "COMPILING LINUXPTP"
