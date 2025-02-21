@@ -25,6 +25,7 @@ rm -rf /tmp/aports
 
 mv ~/packages/main/aarch64/*.apk "$ROOTFS_PATH/tmp/"
 chroot_exec apk add --allow-untrusted /tmp/*.apk
+chroot_exec rm -f /tmp/*.apk
 
 echo "#######################################"
 echo "COMPILING LINUXPTP"
