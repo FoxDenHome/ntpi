@@ -8,20 +8,15 @@ echo "#######################################"
 echo "COMPILING CHRONY + GPSD"
 echo "#######################################"
 
-git clone --depth 1 --branch 3.21-stable https://gitlab.alpinelinux.org/alpine/aports.git /tmp/aports
-cd /tmp/aports
-patch -p1 -i "$INPUT_PATH/aports.patch"
-
 doabuild() {
     abuild -r -F validate builddeps clean fetch unpack prepare mkusers build rootpkg
 }
 
-cd /tmp/aports/main/chrony
+cd "$CACHE_PATH/download/aports/main/chrony"
 doabuild
-cd /tmp/aports/main/gpsd
+cd "$CACHE_PATH/download/aports/main/gpsd"
 doabuild
 cd /tmp
-rm -rf /tmp/aports
 
 cp -v ~/packages/main/aarch64/*.apk "$ROOTFS_PATH/tmp/"
 chroot_exec /bin/sh -c 'rm -fv /tmp/*openrc*.apk /tmp/*doc*.apk'
