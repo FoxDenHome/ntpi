@@ -1,0 +1,22 @@
+diff --git a/main/chrony/APKBUILD b/main/chrony/APKBUILD
+index 120412d2..5d5e1b40 100644
+--- a/main/chrony/APKBUILD
++++ b/main/chrony/APKBUILD
+@@ -29,16 +29,10 @@ source="https://chrony-project.org/releases/chrony-$pkgver.tar.gz
+
+ prepare() {
+        default_prepare
+-
+-       # We copy timepps.h to the local build directory instead of
+-       # creating a pps-tools-dev package for ppstime.h
+-       # (See https://github.com/ago/pps-tools)
+-       mkdir -p pps-tools/sys
+-       cp "$srcdir"/timepps.h pps-tools/sys/
+ }
+
+ build() {
+-       CPPFLAGS="$CPPFLAGS -I./pps-tools/" \
++       CPPFLAGS="$CPPFLAGS" \
+        CFLAGS="$CFLAGS -flto=auto" \
+        ./configure \
+                --prefix=/usr \

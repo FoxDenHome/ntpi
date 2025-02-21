@@ -4,7 +4,19 @@ set -ex
 export EXTRA_CFLAGS="-O2 -flto"
 export EXTRA_LDFLAGS="-flto"
 
-# TODO: Somehow rebuild gpsd and chrony with PPS support
+echo "#######################################"
+echo "COMPILING CHRONY + GPSD"
+echo "#######################################"
+
+git clone --depth 1 https://gitlab.alpinelinux.org/alpine/aports.git /tmp/aports
+cd /tmp/aports
+patch -p1 -i "$INPUT_PATH/aports.patch"
+
+cd /tmp/aports/main/chrony
+abuild -r -F
+cd /tmp/aports/main/gpsd
+abuild -r -F
+rm -rf /tmp/aports
 
 echo "#######################################"
 echo "COMPILING LINUXPTP"
