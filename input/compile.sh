@@ -23,9 +23,10 @@ doabuild
 cd /tmp
 rm -rf /tmp/aports
 
-mv ~/packages/main/aarch64/*.apk "$ROOTFS_PATH/tmp/"
-chroot_exec apk add --allow-untrusted /tmp/*.apk
-chroot_exec rm -f /tmp/*.apk
+cp -v ~/packages/main/aarch64/*.apk "$ROOTFS_PATH/tmp/"
+chroot_exec /bin/sh -c 'rm -fv /tmp/*openrc*.apk /tmp/*doc*.apk'
+chroot_exec /bin/sh -c 'apk add --allow-untrusted /tmp/*.apk'
+chroot_exec /bin/sh -c 'rm -fv /tmp/*.apk'
 
 echo "#######################################"
 echo "COMPILING LINUXPTP"
