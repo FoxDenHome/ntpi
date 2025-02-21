@@ -16,6 +16,7 @@ cd /tmp/aports/main/chrony
 abuild -r -F
 cd /tmp/aports/main/gpsd
 abuild -r -F
+cd /tmp
 rm -rf /tmp/aports
 
 echo "#######################################"
