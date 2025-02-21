@@ -51,7 +51,7 @@ download_if_needed() {
 download_if_needed 'https://github.com/nwtime/linuxptp/archive/refs/tags/v4.4.tar.gz' '61757bc0a58d789b8fcbdddf56c88a0230597184a70dcb2ac05b4c6b619f7d5c' 'linuxptp.tgz'
 #download_if_needed 'https://timebeat.app/assets/packages/timebeat-1.4.4-arm64.deb' 'b1c8366847bcec6ae56a728dc60dda1675b6abab7ecc2ced51e1bba8f90f3b3a' 'timebeat.deb'
 
-if [ ! -f "$CACHE_PATH/download/aports" ]
+if [ ! -d "$CACHE_PATH/download/aports" ]
 then
     git clone https://gitlab.alpinelinux.org/alpine/aports.git "$CACHE_PATH/download/aports"
 fi
