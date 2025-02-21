@@ -38,7 +38,7 @@ chroot_exec rc-update add kanidm-unixd-tasks default
 chroot_exec rc-update add nscd default
 chroot_exec rc-update add hwclock
 
-chroot_exec rc-update del netdata default
+#chroot_exec rc-update del netdata default
 chroot_exec rm -f /etc/periodic/daily/netdata-updater
 
 # Configure kernel modules
@@ -121,7 +121,6 @@ chroot_exec ln -s /data/var/lib/netdata /opt/netdata/var/lib/
 chroot_exec ln -s /data/var/cache/netdata /opt/netdata/var/cache/
 chroot_exec ln -s /var/run/netdata /opt/netdata/var/run/
 
-chroot_exec ln -s /usr/lib/security/pam_kanidm.so /lib/security/pam_kanidm.so
 chroot_exec ln -s /bin/zsh /usr/bin/zsh
 
 chroot_exec sed -i 's~/etc/ssh/ssh_host_~/data/etc/ssh/ssh_host_~g' /etc/init.d/sshd
