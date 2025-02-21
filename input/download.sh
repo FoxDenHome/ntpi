@@ -48,7 +48,7 @@ download_if_needed() {
     fi
 }
 
-download_if_needed 'https://github.com/nwtime/linuxptp/archive/refs/tags/v4.4.tar.gz' '61757bc0a58d789b8fcbdddf56c88a0230597184a70dcb2ac05b4c6b619f7d5c' 'linuxptp.tgz'
+download_if_needed 'https://github.com/FoxDenHome/linuxptp/archive/refs/tags/v3.1.1-dori1.tar.gz' 'af1a02f0b2fd0286c699bab83f08a7e2ca9179fdfc9d47cd599de2c56de9231a' 'linuxptp.tgz'
 #download_if_needed 'https://timebeat.app/assets/packages/timebeat-1.4.4-arm64.deb' 'b1c8366847bcec6ae56a728dc60dda1675b6abab7ecc2ced51e1bba8f90f3b3a' 'timebeat.deb'
 
 if [ ! -d "$CACHE_PATH/download/aports" ]
