@@ -9,7 +9,7 @@ depend()
 start()
 {
     ebegin Preparing persistent data
-    /sbin/ab_resizedata
+    /usr/sbin/ab_resizedata
 
     # make sure /data is mounted
     mount -a
