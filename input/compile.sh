@@ -4,6 +4,8 @@ set -ex
 export EXTRA_CFLAGS="-O2 -flto"
 export EXTRA_LDFLAGS="-flto"
 
+# TODO: Somehow rebuild gpsd and chrony with PPS support
+
 echo "#######################################"
 echo "COMPILING LINUXPTP"
 echo "#######################################"
