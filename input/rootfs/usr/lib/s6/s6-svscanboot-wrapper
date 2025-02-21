@@ -4,4 +4,4 @@ set -e
 mkdir -p "$1/"
 cp -a /etc/s6/* "$1/"
 
-exec /lib/s6/s6-svscanboot "$@"
+exec /usr/lib/s6/s6-svscanboot "$@"

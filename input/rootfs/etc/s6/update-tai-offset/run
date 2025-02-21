@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /bin/update-tai-offset.py
+exec /usr/bin/update-tai-offset.py

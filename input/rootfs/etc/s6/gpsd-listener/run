@@ -1,2 +1,2 @@
 #!/bin/sh
-exec s6-setuidgid nobody /bin/gpsd-listener.py
+exec s6-setuidgid nobody /usr/bin/gpsd-listener.py
