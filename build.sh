@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 rm -rf output && mkdir -p output
 
 export DEFAULT_KERNEL_MODULES='*'
-export CMDLINE='console=tty1 root=/dev/root rootfstype=ext4 fsck.repair=yes ro rootwait'
+export CMDLINE='console=tty1 root=/dev/root rootfstype=ext4 fsck.repair=yes ro rootwait isolcpus=2,3'
 
 git rev-parse HEAD > input/rootfs/etc/image_commit
 date > input/rootfs/etc/image_date
