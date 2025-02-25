@@ -2,4 +2,4 @@
 
 export PROMETHEUS_METRICS_FILE=/tmp/node-exporter/ts2phc.prom
 
-exec /usr/bin/ptp4l-sync-monitor.py /usr/bin/taskset -c 3 /usr/sbin/ts2phc -c eth0 -s nmea -f /etc/ptp4l.conf -m -q -l 7
+exec /usr/bin/ptp4l-sync-monitor.py /usr/sbin/ts2phc -c eth0 -s nmea -f /etc/ptp4l.conf -m -q -l 7
