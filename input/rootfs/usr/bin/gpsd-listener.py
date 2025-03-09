@@ -6,9 +6,13 @@ from select import select
 from threading import Thread
 from traceback import print_exc
 from time import sleep
+from signal import alarm, signal, SIGALRM
+from sys import exit
 
 IP = "127.0.0.1"
 PORT = 9887
+GPSD_IDLE_TIMEOUT_SECONDS = 60
+
 server = socket(AF_INET, SOCK_STREAM)
 server.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 server.bind((IP, PORT))
@@ -17,6 +21,8 @@ server.setsockopt(IPPROTO_TCP, TCP_NODELAY, 1)
 
 rxset = [server]
 
+def feed_wd():
+    alarm(GPSD_IDLE_TIMEOUT_SECONDS)
 
 def close_socket(sock):
     if sock in rxset:
@@ -26,6 +32,7 @@ def close_socket(sock):
 
 
 def do_forward(nmea):
+    feed_wd()
     for sock in rxset:
         if sock is server:
             continue
@@ -38,7 +45,7 @@ def do_forward(nmea):
 
 def handle_sockets():
     while True:
-        rxfds, txfds, exfds = select(rxset, [], rxset)
+        rxfds, _, _ = select(rxset, [], [])
         for sock in rxfds:
             if sock is server:
                 conn, _ = server.accept()
@@ -75,8 +82,14 @@ def handle_gpsd():
             print_exc()
         sleep(1)
 
+def handle_wd_timeout(signum, frame):
+    print("GPSD idle timeout", flush=True)
+    exit(1)
 
 def main():
+    signal(SIGALRM, handle_wd_timeout)
+    feed_wd()
+
     gpsd_thread = Thread(target=handle_gpsd)
     gpsd_thread.start()
     sock_thread = Thread(target=handle_sockets)
