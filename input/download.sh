@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+git config --global user.email 'ntpi-builder@foxden.network'
+git config --global user.name 'ntpi-builder'
+
 mkdir -p "$CACHE_PATH/download" && rm -f "$CACHE_PATH/download/"*.tmp
 
 hash_check() {
@@ -61,5 +64,6 @@ cd "$CACHE_PATH/download/aports"
 git checkout "${APORTS_BRANCH}"
 git pull
 git reset --hard "origin/${APORTS_BRANCH}"
+git cherry-pick bb0613ae45c57b71a7bd748428ccf9c7ca6521dc
+git cherry-pick c8a02efd5d56bc22957a0fca5d28f76ad0651a9a
 git clean -fdx
-patch -p1 -i "$INPUT_PATH/aports.patch"
