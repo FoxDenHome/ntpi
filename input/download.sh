@@ -51,8 +51,7 @@ download_if_needed() {
     fi
 }
 
-download_if_needed 'https://github.com/FoxDenHome/linuxptp/archive/refs/tags/v3.1.1-dori2.tar.gz' 'dacb4ce8609963101232159ca99a49d1301208b1902ddb7ea658852d82ce658f' 'linuxptp.tgz'
-#download_if_needed 'https://timebeat.app/assets/packages/timebeat-1.4.4-arm64.deb' 'b1c8366847bcec6ae56a728dc60dda1675b6abab7ecc2ced51e1bba8f90f3b3a' 'timebeat.deb'
+# download_if_needed URL SHA256 DESTINATION
 
 if [ ! -d "$CACHE_PATH/download/aports" ]
 then

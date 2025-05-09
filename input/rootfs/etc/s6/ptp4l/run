@@ -1,2 +1,0 @@
-#!/bin/sh
-exec /usr/sbin/ptp4l -i eth0 -i eth0.2 -i eth0.3 -i eth0.4 -i eth0.5 -i eth0.6 -f /etc/ptp4l.conf
