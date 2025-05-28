@@ -58,7 +58,7 @@ home_prefix = "/data/home/"
 
 # Default: uuid
 
-# home_attr = "uuid"
+home_attr = "name"
 
 # Controls the prefix that will be appended to the home alias when mounting home directories. Must
 # end with a trailing `/`. If unset, defaults to the value of the `home_prefix`.
@@ -84,7 +84,7 @@ home_mount_prefix = "/data/home/"
 #
 # Default: spn
 
-home_alias = "name"
+home_alias = "none"
 
 
 # Controls if home directories should be prepopulated with the contents of `/etc/skel`
