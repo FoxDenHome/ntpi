@@ -9,14 +9,52 @@ echo 'include usercfg.txt' >> "$BOOTFS_PATH/config.txt"
 # Install packages
 cp -d -r "$INPUT_PATH/rootfs/etc/apk/keys/"* "$ROOTFS_PATH/etc/apk/keys/"
 echo '@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> "$ROOTFS_PATH/etc/apk/repositories"
-echo '@edge-community https://dl-cdn.alpinelinux.org/alpine/edge/community' >> "$ROOTFS_PATH/etc/apk/repositories"
 echo '@libnss_igshim https://github.com/Doridian/libnss_igshim/releases/download' >> "$ROOTFS_PATH/etc/apk/repositories"
 chroot_exec apk update
 chroot_exec apk upgrade
-chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils htop curl screen prometheus-node-exporter bridge wget tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-smbus py3-pyserial py3-requests raspberrypi libc6-compat net-snmp openssl pps-tools pps-tools-dev fish
-chroot_exec apk add musl-nscd openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc chrony gpsd gpsd-clients
-chroot_exec apk add kanidm-openrc@testing kanidm-clients@testing kanidm-unixd-clients@testing sudo-ldap@testing
-chroot_exec apk add libnss_igshim@libnss_igshim
+chroot_exec apk add \
+                bridge \
+                bridge-utils \
+                chrony \
+                curl \
+                ethtool \
+                fish \
+                git \
+                gpsd \
+                gpsd-clients \
+                htop \
+                i2c-tools \
+                kanidm-clients@testing \
+                kanidm-openrc@testing \
+                kanidm-unixd-clients@testing \
+                keepalived \
+                keepalived-openrc \
+                libc6-compat \
+                libnss_igshim@libnss_igshim \
+                musl-nscd \
+                nano \
+                net-snmp \
+                openssh-server \
+                openssh-server-common \
+                openssh-server-common-openrc \
+                openssh-server-pam \
+                openssh-sftp-server \
+                openssl \
+                pps-tools \
+                pps-tools-dev \
+                prometheus-node-exporter \
+                py3-cffi \
+                py3-pyserial \
+                py3-requests \
+                py3-smbus \
+                python3 \
+                raspberrypi \
+                s6 \
+                s6-openrc \
+                screen \
+                sudo-ldap@testing \
+                tcpdump \
+                wget
 
 chroot_exec wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh
 chroot_exec sh /tmp/netdata-kickstart.sh --non-interactive --stable-channel --disable-telemetry
