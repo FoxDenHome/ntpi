@@ -14,15 +14,9 @@ echo '@libnss_igshim https://github.com/Doridian/libnss_igshim/releases/download
 chroot_exec apk update
 chroot_exec apk upgrade
 chroot_exec apk add s6 s6-openrc pps-tools git i2c-tools bridge-utils htop curl screen prometheus-node-exporter bridge wget tcpdump nano openssh-sftp-server ethtool keepalived keepalived-openrc python3 py3-cffi py3-smbus py3-pyserial py3-requests raspberrypi libc6-compat net-snmp openssl pps-tools pps-tools-dev fish
-chroot_exec apk add musl-nscd openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc
+chroot_exec apk add musl-nscd openssh-server openssh-server-pam openssh-server-common openssh-server-common-openrc chrony gpsd
 chroot_exec apk add kanidm-openrc@testing kanidm-clients@testing kanidm-unixd-clients@testing sudo-ldap@testing
 chroot_exec apk add libnss_igshim@libnss_igshim
-
-# Run compilation and inclusion steps for external code
-SUDO='' abuild-keygen --append --install -n
-apk update
-"$INPUT_PATH/download.sh"
-"$INPUT_PATH/compile.sh"
 
 chroot_exec wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh
 chroot_exec sh /tmp/netdata-kickstart.sh --non-interactive --stable-channel --disable-telemetry
