@@ -16,6 +16,7 @@ chroot_exec apk add \
                 bridge \
                 bridge-utils \
                 chrony \
+                cronie \
                 curl \
                 ethtool \
                 fish \
