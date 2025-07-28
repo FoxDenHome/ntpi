@@ -1,13 +1,6 @@
 ## Kanidm Unixd Service Configuration - /etc/kanidm/unixd
 
-# Defines a set of POSIX groups where membership of any of these groups
-# will be allowed to login via PAM. All POSIX users and groups can be
-# resolved by nss regardless of PAM login status. This may be a group
-# name, spn, or uuid.
-#
-# Default: empty set (no access allowed)
-
-pam_allowed_login_groups = ["login-users"]
+version = '2'
 
 # Kanidm unix will bind all cached credentials to a local Hardware Security
 # Module (HSM) to prevent exfiltration and attacks against these. In addition,
@@ -75,7 +68,8 @@ home_attr = "name"
 #
 # Default: unset
 #
-home_mount_prefix = "/data/home/"
+# home_mount_prefix = "/home/"
+#
 
 # The default token attribute used for generating symlinks pointing to the user's home
 # directory. If set, this will become the value of the home path to nss calls. It is recommended you
@@ -131,3 +125,18 @@ gid_attr_map = "name"
 # Default: Empty set (no overrides)
 
 allow_local_account_override = ["share"]
+
+[kanidm]
+
+# Defines a set of POSIX groups where membership of any of these groups
+# will be allowed to login via PAM. All POSIX users and groups can be
+# resolved by nss regardless of PAM login status. This may be a group
+# name, spn, or uuid.
+#
+# Default: empty set (no access allowed)
+
+pam_allowed_login_groups = ["login-users"]
+
+[[kanidm.map_group]]
+local = "wheel"
+with = "superadmins"
