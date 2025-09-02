@@ -55,7 +55,8 @@ chroot_exec apk add \
                 screen \
                 sudo-ldap@testing \
                 tcpdump \
-                wget
+                wget \
+                ncdu
 
 # Configure services
 chroot_exec rc-update del rngd sysinit
