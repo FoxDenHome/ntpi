@@ -57,10 +57,6 @@ chroot_exec apk add \
                 tcpdump \
                 wget
 
-chroot_exec wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh
-chroot_exec sh /tmp/netdata-kickstart.sh --non-interactive --stable-channel --disable-telemetry
-chroot_exec rm -f /tmp/netdata-kickstart.sh
-
 # Configure services
 chroot_exec rc-update del rngd sysinit
 chroot_exec rc-update del ntpd default
@@ -72,9 +68,6 @@ chroot_exec rc-update add kanidm-unixd default
 chroot_exec rc-update add kanidm-unixd-tasks default
 chroot_exec rc-update add nscd default
 chroot_exec rc-update add hwclock
-
-#chroot_exec rc-update del netdata default
-chroot_exec rm -f /etc/periodic/daily/netdata-updater
 
 # Configure kernel modules
 LOAD_KERNEL_MODULES='8021q af_packet bridge dwc2 garp i2c-dev i2c-mux i2c-mux-pinctrl ipv6 llc pps-gpio pps-ldisc raspberrypi-hwmon roles rtc-pcf85063 stp ftdi_sio'
@@ -150,10 +143,5 @@ chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key.pub /etc/ssh/ssh_host_ed255
 
 chroot_exec ln -s /data/var/lib/kanidm-unixd /var/lib/
 chroot_exec ln -s /data/var/cache/kanidm-unixd /var/cache/
-
-chroot_exec rm -rf /opt/netdata/var/lib/netdata /opt/netdata/var/cache/netdata /opt/netdata/var/run/netdata
-chroot_exec ln -s /data/var/lib/netdata /opt/netdata/var/lib/
-chroot_exec ln -s /data/var/cache/netdata /opt/netdata/var/cache/
-chroot_exec ln -s /var/run/netdata /opt/netdata/var/run/
 
 chroot_exec sed -i 's~/etc/ssh/ssh_host_~/data/etc/ssh/ssh_host_~g' /etc/init.d/sshd

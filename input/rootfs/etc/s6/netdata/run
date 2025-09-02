@@ -1,6 +1,0 @@
-#!/bin/sh
-
-mkdir -p /data/var/cache/netdata /data/var/lib/netdata /opt/netdata/var/run/netdata
-chown -R netdata:netdata /data/var/cache/netdata /data/var/lib/netdata /opt/netdata/var/run/netdata
-
-exec /opt/netdata/usr/sbin/netdata -D
