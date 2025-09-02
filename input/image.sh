@@ -53,7 +53,6 @@ chroot_exec apk add \
                 s6 \
                 s6-openrc \
                 screen \
-                sudo-ldap@testing \
                 tcpdump \
                 wget \
                 ncdu \
