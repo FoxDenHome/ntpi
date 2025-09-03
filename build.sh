@@ -11,7 +11,6 @@ export ALPINE_BRANCH=3.22
 
 git rev-parse HEAD > input/rootfs/etc/image_commit
 date > input/rootfs/etc/image_date
-git ls-files input/rootfs/ --stage --full-name > input/rootfs-ls-files
 
 export BUILD_IMAGE='registry.gitlab.com/raspi-alpine/builder/master:latest'
 

@@ -126,13 +126,6 @@ chown 0:0 "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 chmod 700 "$ROOTFS_PATH/root"
 mkdir -p "$ROOTFS_PATH/root"
 
-while read lineraw; do
-    line="$(echo -n "$lineraw" | sed 's/\s\s*/ /g')"
-    TMODE="$(echo -n "$line" | cut -d' ' -f1 | sed 's/^100//')"
-    TPATH="$(echo -n "$line" | cut -d' ' -f4 | cut -d'/' '-f3-')"
-    chmod "$TMODE" "$ROOTFS_PATH/$TPATH"
-done < "$INPUT_PATH/rootfs-ls-files"
-
 ln -s '/data/etc/adjtime' "$ROOTFS_PATH/etc/adjtime"
 
 IMAGE_COMMIT="$(cat "$ROOTFS_PATH/etc/image_commit" | tr -d "\r\n\t")"
@@ -150,7 +143,5 @@ chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key.pub /etc/ssh/ssh_host_ed255
 
 chroot_exec ln -s /data/var/lib/kanidm-unixd /var/lib/
 chroot_exec ln -s /data/var/cache/kanidm-unixd /var/cache/
-
-chroot_exec ln -sf base-session /etc/pam.d/base-session-noninteractive
 
 chroot_exec sed -i 's~/etc/ssh/ssh_host_~/data/etc/ssh/ssh_host_~g' /etc/init.d/sshd

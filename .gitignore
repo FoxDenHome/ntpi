@@ -3,5 +3,4 @@
 /testimg
 /input/rootfs/etc/image_commit
 /input/rootfs/etc/image_date
-/input/rootfs-ls-files
 /cache
