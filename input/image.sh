@@ -124,24 +124,10 @@ rm -rf "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 mkdir -p "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 chown 0:0 "$ROOTFS_PATH/home" "$ROOTFS_PATH/root"
 chmod 700 "$ROOTFS_PATH/root"
-mkdir -p "$ROOTFS_PATH/root"
-
-ln -s '/data/etc/adjtime' "$ROOTFS_PATH/etc/adjtime"
 
 IMAGE_COMMIT="$(cat "$ROOTFS_PATH/etc/image_commit" | tr -d "\r\n\t")"
 IMAGE_DATE="$(cat "$ROOTFS_PATH/etc/image_date" | tr -d "\r\n\t")"
 sed "s/__IMAGE_COMMIT__/$IMAGE_COMMIT/" -i "$ROOTFS_PATH/etc/motd"
 sed "s/__IMAGE_DATE__/$IMAGE_DATE/" -i "$ROOTFS_PATH/etc/motd"
-
-# Ensure sshd can generate host keys
-chroot_exec ln -s /data/etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key
-chroot_exec ln -s /data/etc/ssh/ssh_host_rsa_key.pub /etc/ssh/ssh_host_rsa_key.pub
-chroot_exec ln -s /data/etc/ssh/ssh_host_ecdsa_key /etc/ssh/ssh_host_ecdsa_key
-chroot_exec ln -s /data/etc/ssh/ssh_host_ecdsa_key.pub /etc/ssh/ssh_host_ecdsa_key.pub
-chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key /etc/ssh/ssh_host_ed25519_key
-chroot_exec ln -s /data/etc/ssh/ssh_host_ed25519_key.pub /etc/ssh/ssh_host_ed25519_key.pub
-
-chroot_exec ln -s /data/var/lib/kanidm-unixd /var/lib/
-chroot_exec ln -s /data/var/cache/kanidm-unixd /var/cache/
 
 chroot_exec sed -i 's~/etc/ssh/ssh_host_~/data/etc/ssh/ssh_host_~g' /etc/init.d/sshd
