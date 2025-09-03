@@ -1,0 +1,4 @@
+session required pam_limits.so
+session optional pam_unix.so try_first_pass
+session optional pam_kanidm.so ignore_unknown_user
+session required pam_env.so
