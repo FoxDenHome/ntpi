@@ -33,3 +33,8 @@ auto eth0.6
 iface eth0.6 inet static
 	address 10.6.1.123
 	netmask 255.255.0.0
+
+auto eth0.2001
+iface eth0.2001 inet static
+	address 100.96.41.123
+	netmask 255.255.255.0
